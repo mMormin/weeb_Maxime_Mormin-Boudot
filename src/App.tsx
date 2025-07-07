@@ -1,19 +1,19 @@
 import Header from "./components/layout/Header";
 import { Outlet } from "react-router";
-import "./App.css";
+import "./index.css";
 import Footer from "./components/layout/Footer";
 
 function App() {
   return (
-    <>
+    <div className="font-roboto">
       <Header />
 
-      <main>
+      <main className="bg-primary">
         <Outlet />
       </main>
 
       <Footer />
-    </>
+    </div>
   );
 }
 

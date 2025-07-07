@@ -1,1 +1,8 @@
 @import "tailwindcss";
+
+@theme {
+  --font-roboto: Roboto, sans-serif;
+  --color-primary: #0f172a;
+  --color-secondary: #c084fc;
+  --text-large: 4.375rem;
+}
