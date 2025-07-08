@@ -87,8 +87,9 @@ const ContactForm = () => {
         <p className="text-xs w-[50%]">
           Vous n’avez pas de compte ? Vous pouvez en{" "}
           <span className="underline underline-offset-4 cursor-pointer hover:no-underline hover:text-secondary">
-            créer un maintenant.
+            créer un gratuitement
           </span>
+          .
         </p>
       </div>
     </form>
