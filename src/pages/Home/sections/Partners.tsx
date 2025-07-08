@@ -13,15 +13,15 @@ const Partners = () => {
         </h2>
 
         <div className="flex items-center justify-center gap-20">
-          <img src={logoSf} alt="Illustration" className="w-full" />
+          <img src={logoSf} alt="Illustration" className="size-auto" />
 
-          <img src={logoZ} alt="Illustration" className="w-full" />
+          <img src={logoZ} alt="Illustration" className="size-auto" />
 
-          <img src={logoS} alt="Illustration" className="w-full" />
+          <img src={logoS} alt="Illustration" className="size-auto" />
 
-          <img src={logoW} alt="Illustration" className="w-full" />
+          <img src={logoW} alt="Illustration" className="size-auto" />
 
-          <img src={logoA} alt="Illustration" className="w-full" />
+          <img src={logoA} alt="Illustration" className="size-auto" />
         </div>
       </div>
     </section>
