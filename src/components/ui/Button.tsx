@@ -3,10 +3,11 @@ import { Link } from "react-router";
 import type { ReactNode } from "react";
 
 interface ButtonProps {
-  primary?: boolean;
-  compact?: boolean;
   text: string;
   to?: string;
+  reverseAnimation?: boolean;
+  primary?: boolean;
+  compact?: boolean;
   type?: "button" | "submit" | "reset";
   children?: ReactNode;
 }
@@ -16,8 +17,8 @@ const Button = ({
   to,
   primary = false,
   compact = false,
+  reverseAnimation = false,
   children,
-
   ...props
 }: ButtonProps) => {
   const isExternal = to?.startsWith("http") || to?.startsWith("#");
@@ -28,7 +29,7 @@ const Button = ({
 
   const commonStyles = [
     compact ? "px-4 py-1 text-base" : "px-6 py-3 text-xl",
-    "tracking-wide",
+    "tracking-wider",
     "rounded-lg",
     "transition-colors",
     "cursor-pointer",
@@ -36,10 +37,13 @@ const Button = ({
 
   const MotionElem = motion.button;
 
+  const hoverScale = reverseAnimation ? 0.95 : 1.05;
+  const tapScale = reverseAnimation ? 1.05 : 0.95;
+
   const content = (
     <MotionElem
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      whileHover={{ scale: hoverScale }}
+      whileTap={{ scale: tapScale }}
       className={`${buttonStyles} ${commonStyles}`}
       {...props}
     >

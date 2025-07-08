@@ -50,7 +50,13 @@ const Header = () => {
             Se connecter
           </Link>
 
-          <Button to="/signup" primary text="Rejoindre maintenant" compact />
+          <Button
+            to="/signup"
+            primary
+            text="Rejoindre maintenant"
+            compact
+            reverseAnimation
+          />
         </div>
       </nav>
     </header>

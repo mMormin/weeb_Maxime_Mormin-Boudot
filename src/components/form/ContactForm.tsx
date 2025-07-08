@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Button from "../ui/Button";
+import { RiErrorWarningFill } from "react-icons/ri";
 import { getInputClass } from "../../utils/inputClasses";
 
 const ContactForm = () => {
@@ -13,13 +14,13 @@ const ContactForm = () => {
       message: "",
     },
     validationSchema: Yup.object({
-      lastName: Yup.string().required("Votre lastName est requis."),
-      name: Yup.string().required("Votre prénom est requis."),
-      phone: Yup.string().required("Votre numéro de téléphone est requis."),
+      lastName: Yup.string().required("Saisissez votre nom."),
+      name: Yup.string().required("Saisissez votre prénom."),
+      phone: Yup.string().required("Saisissez votre numéro de téléphone."),
       email: Yup.string()
-        .email("Email invalide.")
-        .required("Votre addresse email est requise."),
-      message: Yup.string().required("Le contenu de votre message est requis."),
+        .email("Adresse email non valide.")
+        .required("Saisissez votre adresse email."),
+      message: Yup.string().required("Saisissez votre message."),
     }),
     onSubmit: (values) => {
       console.log("Form submitted:", values);
@@ -46,9 +47,12 @@ const ContactForm = () => {
             )}
           />
 
-          <div className="text-red-500 text-sm h-5 mt-1">
+          <div className="text-left text-red-400 text-sm h-5 mt-1">
             {formik.touched.lastName && formik.errors.lastName && (
-              <p>{formik.errors.lastName}</p>
+              <span className="flex gap-2">
+                <RiErrorWarningFill className="mt-[2px]" />
+                <p>{formik.errors.lastName}</p>
+              </span>
             )}
           </div>
         </div>
@@ -66,9 +70,12 @@ const ContactForm = () => {
               !!(formik.touched.name && formik.errors.name)
             )}
           />
-          <div className="text-red-500 text-sm h-5 mt-1">
+          <div className="text-left text-red-400 text-sm h-5 mt-1">
             {formik.touched.name && formik.errors.name && (
-              <p>{formik.errors.name}</p>
+              <span className="flex gap-2">
+                <RiErrorWarningFill className="mt-[2px]" />
+                <p>{formik.errors.name}</p>
+              </span>
             )}
           </div>
         </div>
@@ -88,9 +95,12 @@ const ContactForm = () => {
               !!(formik.touched.phone && formik.errors.phone)
             )}
           />
-          <div className="text-red-500 text-sm h-5 mt-1">
+          <div className="text-left text-red-400 text-sm h-5 mt-1">
             {formik.touched.phone && formik.errors.phone && (
-              <p>{formik.errors.phone}</p>
+              <span className="flex gap-2">
+                <RiErrorWarningFill className="mt-[2px]" />
+                <p>{formik.errors.phone}</p>
+              </span>
             )}
           </div>
         </div>
@@ -108,9 +118,12 @@ const ContactForm = () => {
               !!(formik.touched.email && formik.errors.email)
             )}
           />
-          <div className="text-red-500 text-sm h-5 mt-1">
+          <div className="text-left text-red-400 text-sm h-5 mt-1">
             {formik.touched.email && formik.errors.email && (
-              <p>{formik.errors.email}</p>
+              <span className="flex gap-2">
+                <RiErrorWarningFill className="mt-[2px]" />
+                <p>{formik.errors.email}</p>
+              </span>
             )}
           </div>
         </div>
@@ -130,9 +143,12 @@ const ContactForm = () => {
           )}
         />
 
-        <div className="text-red-500 text-sm h-5 mt-1">
+        <div className="text-left text-red-400 text-sm h-5 mt-1">
           {formik.touched.message && formik.errors.message && (
-            <p>{formik.errors.message}</p>
+            <span className="flex gap-2">
+              <RiErrorWarningFill className="mt-[2px]" />
+              <p>{formik.errors.message}</p>
+            </span>
           )}
         </div>
       </div>

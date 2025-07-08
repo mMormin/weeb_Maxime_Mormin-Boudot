@@ -1,25 +1,21 @@
-import clsx from "clsx";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Button from "../ui/Button";
+import { getInputClass } from "../../utils/inputClasses";
+import { Link } from "react-router";
+import { RiErrorWarningFill } from "react-icons/ri";
 
 const ContactForm = () => {
   const formik = useFormik({
     initialValues: {
-      nom: "",
-      prenom: "",
-      telephone: "",
       email: "",
-      message: "",
+      password: "",
     },
     validationSchema: Yup.object({
-      nom: Yup.string().required("Votre nom est requis."),
-      prenom: Yup.string().required("Votre prénom est requis."),
-      telephone: Yup.string().required("Votre numéro de téléphone est requis."),
       email: Yup.string()
-        .email("Email invalide.")
-        .required("Votre addresse email est requise."),
-      message: Yup.string().required("Le contenu de votre message est requis."),
+        .email("Adresse email non valide.")
+        .required("Saisissez votre adresse email."),
+      password: Yup.string().required("Saisissez votre mot de passe. "),
     }),
     onSubmit: (values) => {
       console.log("Form submitted:", values);
@@ -27,83 +23,8 @@ const ContactForm = () => {
   });
 
   return (
-    <form
-      onSubmit={formik.handleSubmit}
-      className="bg-[#21223F] px-12 py-6 rounded-2xl text-white space-y-4 w-full"
-    >
-      <div className="grid grid-cols-2 gap-10">
-        <div>
-          <label className="sr-only">Nom</label>
-          <input
-            type="text"
-            name="nom"
-            placeholder="Nom"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.nom}
-            className={clsx(
-              "w-full p-2 border-2 border-transparent text-white tracking-wider text-2xl text-center transition-all outline-none",
-              formik.touched.nom && formik.errors.nom
-                ? "border-b-red-500 focus:border-b-red-500 placeholder:text-red-500"
-                : "border-b-secondary focus:border-secondary placeholder:text-secondary focus:border-2 focus:ring-secondary"
-            )}
-          />
-
-          <div className="text-red-500 text-sm h-5 mt-1">
-            {formik.touched.nom && formik.errors.nom && (
-              <p>{formik.errors.nom}</p>
-            )}
-          </div>
-        </div>
-
-        <div>
-          <label className="sr-only">Prénom</label>
-          <input
-            type="text"
-            name="prenom"
-            placeholder="Prénom"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.prenom}
-            className={clsx(
-              "w-full p-2 border-2 border-transparent text-white tracking-wider text-2xl text-center transition-all outline-none",
-              formik.touched.prenom && formik.errors.prenom
-                ? "border-b-red-500 focus:border-b-red-500 placeholder:text-red-500"
-                : "border-b-secondary focus:border-secondary placeholder:text-secondary focus:border-2 focus:ring-secondary"
-            )}
-          />
-          <div className="text-red-500 text-sm h-5 mt-1">
-            {formik.touched.prenom && formik.errors.prenom && (
-              <p>{formik.errors.prenom}</p>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-10">
-        <div>
-          <label className="sr-only">Téléphone</label>
-          <input
-            type="text"
-            name="telephone"
-            placeholder="Téléphone"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.telephone}
-            className={clsx(
-              "w-full p-2 border-2 border-transparent text-white tracking-wider text-2xl text-center transition-all outline-none",
-              formik.touched.telephone && formik.errors.telephone
-                ? "border-b-red-500 focus:border-b-red-500 placeholder:text-red-500"
-                : "border-b-secondary focus:border-secondary placeholder:text-secondary focus:border-2 focus:ring-secondary"
-            )}
-          />
-          <div className="text-red-500 text-sm h-5 mt-1">
-            {formik.touched.telephone && formik.errors.telephone && (
-              <p>{formik.errors.telephone}</p>
-            )}
-          </div>
-        </div>
-
+    <form onSubmit={formik.handleSubmit}>
+      <div className="space-y-3 text-white">
         <div>
           <label className="sr-only">Email</label>
           <input
@@ -113,47 +34,62 @@ const ContactForm = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.email}
-            className={clsx(
-              "w-full p-2 border-2 border-transparent text-white tracking-wider text-2xl text-center transition-all outline-none",
-              formik.touched.email && formik.errors.email
-                ? "border-b-red-500 focus:border-b-red-500 placeholder:text-red-500"
-                : "border-b-secondary focus:border-secondary placeholder:text-secondary focus:border-2 focus:ring-secondary"
+            className={getInputClass(
+              !!(formik.touched.email && formik.errors.email)
             )}
           />
-          <div className="text-red-500 text-sm h-5 mt-1">
+          <div className="text-left text-red-400 text-sm h-5 mt-1">
             {formik.touched.email && formik.errors.email && (
-              <p>{formik.errors.email}</p>
+              <span className="flex gap-2">
+                <RiErrorWarningFill className="mt-[2px]" />
+                <p>{formik.errors.email}</p>
+              </span>
+            )}
+          </div>
+        </div>
+
+        <div>
+          <label className="sr-only">Prénom</label>
+          <input
+            type="text"
+            name="password"
+            placeholder="Mot de passe"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.password}
+            className={getInputClass(
+              !!(formik.touched.password && formik.errors.password)
+            )}
+          />
+          <div className="text-left text-red-400 text-sm h-5 mt-1">
+            {formik.touched.password && formik.errors.password && (
+              <span className="flex gap-2">
+                <RiErrorWarningFill className="mt-[2px]" />
+                <p>{formik.errors.password}</p>
+              </span>
             )}
           </div>
         </div>
       </div>
 
-      <div>
-        <label className="sr-only">Message</label>
-        <textarea
-          name="message"
-          placeholder="Votre message"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.message}
-          rows={4}
-          className={clsx(
-            "w-full p-2 border-2 border-transparent text-white tracking-wider text-2xl text-center transition-all outline-none",
-            formik.touched.message && formik.errors.message
-              ? "border-b-red-500 focus:border-b-red-500 placeholder:text-red-500"
-              : "border-b-secondary focus:border-secondary placeholder:text-secondary focus:border-2 focus:ring-secondary"
-          )}
-        />
-
-        <div className="text-red-500 text-sm h-5 mt-1">
-          {formik.touched.message && formik.errors.message && (
-            <p>{formik.errors.message}</p>
-          )}
-        </div>
+      <div className="text-center mt-10">
+        <Button type="submit" text="Se Connecter" primary reverseAnimation />
       </div>
 
-      <div className="text-center">
-        <Button type="submit" text="Envoyer" primary />
+      <div className="flex flex-col my-10 tracking-wider space-y-6 justify-center items-center">
+        <Link
+          to="#"
+          className="font-bold hover:underline underline-offset-2 cursor-pointer text-sm"
+        >
+          Mot de passe oublié ?
+        </Link>
+
+        <p className="text-xs w-[50%]">
+          Vous n’avez pas de compte ? Vous pouvez en{" "}
+          <span className="underline underline-offset-4 cursor-pointer hover:no-underline hover:text-secondary">
+            créer un maintenant.
+          </span>
+        </p>
       </div>
     </form>
   );

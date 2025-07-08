@@ -7,7 +7,7 @@ export function getInputClass(hasError: boolean) {
   return clsx(
     commonInputClass,
     hasError
-      ? "border-b-red-500 focus:border-b-red-500 placeholder:text-red-500"
+      ? "border-b-red-400 focus:border-b-red-400 placeholder:text-red-400"
       : "border-b-secondary focus:border-secondary placeholder:text-secondary focus:border-2 focus:ring-secondary"
   );
 }
