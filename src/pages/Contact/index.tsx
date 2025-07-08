@@ -1,5 +1,24 @@
+import Form from "../../components/form/ContactForm";
+
 const Contact = () => {
-  return <h1 className="text-3xl font-bold">Contact</h1>;
+  return (
+    <section className="text-white py-10 pt-40">
+      <div className="max-w-4xl mx-auto text-center flex flex-col items-center justify-center">
+        <h2 className="text-large font-extrabold tracking-wide leading-20">
+          Votre avis compte !
+        </h2>
+
+        <p className="text-xl leading-8 tracking-wide my-10">
+          Votre retour est essentiel pour nous améliorer ! Partagez votre
+          expérience, dites-nous ce que vous aimez et ce que nous pourrions
+          améliorer. Vos suggestions nous aident à faire de ce blog une
+          ressource toujours plus utile et enrichissante.
+        </p>
+
+        <Form />
+      </div>
+    </section>
+  );
 };
 
 export default Contact;

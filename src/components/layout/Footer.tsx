@@ -7,6 +7,7 @@ import {
   FaInstagram,
   FaLinkedinIn,
 } from "react-icons/fa";
+import { Link } from "react-router";
 
 const socialLinks = [
   { label: "YouTube", Icon: FaYoutube, href: "https://youtube.com" },
@@ -86,9 +87,9 @@ const Footer = () => {
   return (
     <footer className="bg-white mt-12 px-6 md:px-20 py-15">
       <div className="flex flex-col md:flex-row justify-between mb-15 gap-40">
-        <div className="mb-8 md:mb-0">
-          <p className="font-bold text-3xl text-black">weeb</p>
-        </div>
+        <Link to="/" className="mb-8 md:mb-0">
+          <span className="font-bold text-3xl text-black">weeb</span>
+        </Link>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-60 mr-40">
           {Object.entries(footerLinks).map(([section, links]) => (

@@ -1,11 +1,14 @@
 import { motion } from "motion/react";
 import { Link } from "react-router";
+import type { ReactNode } from "react";
 
-interface MotionButtonProps {
+interface ButtonProps {
   primary?: boolean;
   compact?: boolean;
   text: string;
-  to: string;
+  to?: string;
+  type?: "button" | "submit" | "reset";
+  children?: ReactNode;
 }
 
 const Button = ({
@@ -13,8 +16,11 @@ const Button = ({
   to,
   primary = false,
   compact = false,
-}: MotionButtonProps) => {
-  const isExternal = to.startsWith("http") || to.startsWith("#");
+  children,
+
+  ...props
+}: ButtonProps) => {
+  const isExternal = to?.startsWith("http") || to?.startsWith("#");
 
   const buttonStyles = primary
     ? "bg-purple-600 text-white border-purple-600 border-2 hover:bg-purple-700 hover:border-purple-700"
@@ -35,16 +41,32 @@ const Button = ({
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       className={`${buttonStyles} ${commonStyles}`}
+      {...props}
     >
-      {text}
+      {text ?? children}
     </MotionElem>
   );
 
-  return isExternal ? (
-    <a href={to} className="inline-block">
-      {content}
-    </a>
-  ) : (
+  if (!to) {
+    // Aucun lien, donc un vrai bouton (ex: type="submit")
+    return content;
+  }
+
+  if (isExternal) {
+    return (
+      <a
+        href={to}
+        className="inline-block"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {content}
+      </a>
+    );
+  }
+
+  // Lien interne
+  return (
     <Link to={to} className="inline-block">
       {content}
     </Link>

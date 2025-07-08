@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 
-const MotionArrow = motion(ArrowRight);
+const MotionArrow = motion.create(ArrowRight);
 
 interface ArrowLinkProps {
   to: string;

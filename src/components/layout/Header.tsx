@@ -30,7 +30,9 @@ const Header = () => {
         }`}
       >
         <div className="flex justify-center items-center">
-          <span className="text-3xl font-bold text-white mr-12">weeb</span>
+          <Link to="/">
+            <span className="text-3xl font-bold text-white mr-12">weeb</span>
+          </Link>
 
           <div className="flex space-x-6 mt-1 text-white">
             <Link to="/about" className="hover:underline ">
@@ -48,12 +50,7 @@ const Header = () => {
             Se connecter
           </Link>
 
-          <Button
-            to="/signup"
-            primary
-            text="Rejoindre maintenant"
-            compact
-          ></Button>
+          <Button to="/signup" primary text="Rejoindre maintenant" compact />
         </div>
       </nav>
     </header>
