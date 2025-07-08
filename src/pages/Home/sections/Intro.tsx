@@ -3,7 +3,7 @@ import image from "../../../assets/image.png";
 
 const Intro = () => {
   return (
-    <section className="min-h-[90vh] text-white py-10">
+    <section className="text-white py-10 pt-40">
       <div className="max-w-4xl mx-auto text-center flex flex-col items-center justify-center gap-15">
         <div>
           <h1 className="text-large font-extrabold tracking-wide leading-20">
@@ -15,6 +15,7 @@ const Intro = () => {
               facettes
             </span>
           </h1>
+
           <p className="text-xl leading-8 tracking-wide my-10">
             Le monde du web évolue constamment, et nous sommes là pour vous
             guider à travers ses tendances, technologies et meilleures
@@ -22,6 +23,7 @@ const Intro = () => {
             digital, notre blog vous offre du contenu de qualité pour rester à
             la pointe.
           </p>
+
           <div className="flex justify-center items-center gap-6">
             <Button primary text="Découvrir les articles" to="/articles" />
 

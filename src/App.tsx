@@ -5,7 +5,7 @@ import Footer from "./components/layout/Footer";
 
 function App() {
   return (
-    <div className="font-roboto">
+    <div className="font-roboto bg-primary">
       <Header />
 
       <main className="bg-primary">
