@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 interface MotionButtonProps {
   primary?: boolean;
-  compact?: boolean; // 👈 nouvelle prop
+  compact?: boolean;
   text: string;
   to: string;
 }
