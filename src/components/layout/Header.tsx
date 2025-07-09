@@ -7,7 +7,7 @@ import { useMediaQuery } from "../../utils/mediaQuery";
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery("(max-width: 1024px)");
 
   useEffect(() => {
     if (isMobile) return;
@@ -100,7 +100,7 @@ const Header = () => {
       <nav
         className={`mx-auto flex justify-between items-center space-x-6 ${
           isScrolled
-            ? "w-[50vw] rounded-lg h-[76px] shadow-md bg-gradient-to-r from-[#1A2232] to-[#1B2234] px-5"
+            ? "min-w-[700px] w-[50vw] rounded-lg h-[76px] shadow-md bg-gradient-to-r from-[#1A2232] to-[#1B2234] px-5"
             : "w-full py-4"
         }`}
       >

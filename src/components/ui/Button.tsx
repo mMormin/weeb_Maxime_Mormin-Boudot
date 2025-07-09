@@ -55,7 +55,6 @@ const Button = ({
   );
 
   if (!to) {
-    // Aucun lien, donc un vrai bouton (ex: type="submit")
     return content;
   }
 
@@ -72,7 +71,6 @@ const Button = ({
     );
   }
 
-  // Lien interne
   return (
     <Link to={to} className="inline-block">
       {content}
