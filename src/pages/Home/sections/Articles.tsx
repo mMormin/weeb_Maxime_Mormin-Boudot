@@ -1,15 +1,19 @@
 import ArrowLink from "../../../components/ui/ArrowLink";
 import shapes from "../../../assets/shapes.svg";
+import { useMediaQuery } from "../../../utils/mediaQuery";
+import Button from "../../../components/ui/Button";
 
 const Articles = () => {
+  const isMobile = useMediaQuery("(max-width: 1024px)");
+
   return (
-    <section className="text-white py-20">
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-28">
-        <div>
+    <section className="text-white py-20 px-10 xl:px-0">
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-20 xl:gap-28">
+        <div className="px-10 xl:px-0 flex justify-center">
           <img
             src={shapes}
             alt="Description du SVG"
-            className="size-auto max-w-[416px]"
+            className="size-auto max-w-[50%] xl:max-w-full xl:w-[416px]"
           />
         </div>
 
@@ -18,18 +22,27 @@ const Articles = () => {
             Le web, un écosystème en constante évolution
           </p>
 
-          <h2 className="text-large font-extrabold tracking-wide leading-20 text-secondary">
-            Restez informé des <br />
+          <h2 className="text-6xl lg:text-large font-extrabold tracking-wide leading-16 lg:leading-20 text-secondary">
+            Restez informé des{" "}
+            <span className="hidden xl:inline-block">
+              <br />
+            </span>
             dernières <span className="text-white">tendances</span>
           </h2>
 
-          <p className="text-lg tracking-wide">
+          <p className="text-lg tracking-wide text-justify lg:text-left">
             Chaque semaine, nous analysons les nouveautés du web : frameworks
             émergents, bonnes pratiques SEO, accessibilité, et bien plus encore.
             Ne manquez aucune actualité du digital !
           </p>
 
-          <ArrowLink to="/articles" text="Lire les articles récents" />
+          {isMobile ? (
+            <div className="flex justify-center items-center mt-10">
+              <Button text="Lire les articles récents" to="/articles" primary />
+            </div>
+          ) : (
+            <ArrowLink to="/articles" text="Lire les articles récents" />
+          )}
         </div>
       </div>
     </section>

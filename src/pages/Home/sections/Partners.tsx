@@ -6,22 +6,30 @@ import logoZ from "../../../assets/logos/logo_zoomerr.png";
 
 const Partners = () => {
   return (
-    <section className="text-white py-20">
+    <section className="text-white py-20 px-10 xl:px-0">
       <div className="max-w-4xl mx-auto text-center flex flex-col items-center justify-center gap-14">
-        <h2 className="text-6xl font-extrabold tracking-wide leading-20">
+        <h2 className="text-5xl md:text-6xl font-extrabold tracking-wide leading-15 md:leading-20">
           Ils nous font confiance
         </h2>
 
-        <div className="flex items-center justify-center gap-20">
-          <img src={logoSf} alt="Illustration" className="size-auto" />
+        <div className="grid grid-cols-2 gap-10 place-items-center lg:flex lg:flex-row lg:justify-center lg:items-center lg:gap-10">
+          <img
+            src={logoSf}
+            alt="Logo de SmartFinder"
+            className="size-auto w-auto"
+          />
 
-          <img src={logoZ} alt="Illustration" className="size-auto" />
+          <img src={logoZ} alt="Logo de Zoomerr" className="size-auto w-auto" />
 
-          <img src={logoS} alt="Illustration" className="size-auto" />
+          <img src={logoS} alt="Logo de Shells" className="size-auto w-auto" />
 
-          <img src={logoW} alt="Illustration" className="size-auto" />
+          <img src={logoW} alt="Logo de Waves" className="size-auto w-auto" />
 
-          <img src={logoA} alt="Illustration" className="size-auto" />
+          <img
+            src={logoA}
+            alt="Logo de ArtVenue"
+            className="size-auto w-auto col-span-2 lg:col-span-1"
+          />
         </div>
       </div>
     </section>

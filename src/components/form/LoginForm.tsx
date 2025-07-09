@@ -24,7 +24,7 @@ const ContactForm = () => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <div className="space-y-3 text-white">
+      <div className="space-y-9 md:space-y-3 text-white">
         <div>
           <label className="sr-only">Email</label>
           <input
@@ -76,15 +76,15 @@ const ContactForm = () => {
         <Button type="submit" text="Se Connecter" primary reverseAnimation />
       </div>
 
-      <div className="flex flex-col my-10 tracking-wider space-y-6 justify-center items-center">
+      <div className="flex flex-col mt-10 md:my-10 tracking-wider space-y-6 justify-center items-center">
         <Link
           to="#"
-          className="font-bold hover:underline underline-offset-2 cursor-pointer text-sm"
+          className="font-bold hover:underline underline-offset-2 cursor-pointer md:text-sm"
         >
           Mot de passe oublié ?
         </Link>
 
-        <p className="text-xs w-[50%]">
+        <p className="md:text-xs md:w-[50%]">
           Vous n’avez pas de compte ? Vous pouvez en{" "}
           <span className="underline underline-offset-4 cursor-pointer hover:no-underline hover:text-secondary">
             créer un gratuitement

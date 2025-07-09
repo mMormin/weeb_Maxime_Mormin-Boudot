@@ -9,6 +9,7 @@ interface ButtonProps {
   primary?: boolean;
   compact?: boolean;
   type?: "button" | "submit" | "reset";
+  onClick?: () => void;
   children?: ReactNode;
 }
 
@@ -19,6 +20,7 @@ const Button = ({
   compact = false,
   reverseAnimation = false,
   children,
+  onClick,
   ...props
 }: ButtonProps) => {
   const isExternal = to?.startsWith("http") || to?.startsWith("#");
@@ -28,7 +30,7 @@ const Button = ({
     : "bg-primary text-white border-white border-2";
 
   const commonStyles = [
-    compact ? "px-4 py-1 text-base" : "px-6 py-3 text-xl",
+    compact ? "px-4 py-1 text-base" : "md:px-6 px-3 py-3 md:text-xl",
     "tracking-wider",
     "rounded-lg",
     "transition-colors",
@@ -45,6 +47,7 @@ const Button = ({
       whileHover={{ scale: hoverScale }}
       whileTap={{ scale: tapScale }}
       className={`${buttonStyles} ${commonStyles}`}
+      onClick={onClick}
       {...props}
     >
       {text ?? children}
@@ -52,7 +55,6 @@ const Button = ({
   );
 
   if (!to) {
-    // Aucun lien, donc un vrai bouton (ex: type="submit")
     return content;
   }
 
@@ -69,7 +71,6 @@ const Button = ({
     );
   }
 
-  // Lien interne
   return (
     <Link to={to} className="inline-block">
       {content}

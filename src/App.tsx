@@ -8,7 +8,7 @@ function App() {
     <div className="font-roboto bg-primary">
       <Header />
 
-      <main className="bg-primary">
+      <main className="bg-primary ">
         <Outlet />
       </main>
 

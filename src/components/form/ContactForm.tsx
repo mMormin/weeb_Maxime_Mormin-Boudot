@@ -30,7 +30,7 @@ const ContactForm = () => {
   return (
     <form
       onSubmit={formik.handleSubmit}
-      className="bg-[#21223F] px-12 py-6 rounded-2xl text-white space-y-4 w-full"
+      className="bg-[#21223F] px-12 py-6 rounded-2xl text-white space-y-8 md:space-y-4 w-full pt-10 md:pt-0"
     >
       <div className="grid grid-cols-2 gap-10">
         <div>
