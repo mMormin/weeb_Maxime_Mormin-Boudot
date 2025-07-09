@@ -1,18 +1,93 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import Button from "../ui/Button";
+import { Menu, X } from "lucide-react";
+import { useMediaQuery } from "../../utils/mediaQuery";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 767px)");
 
   useEffect(() => {
+    if (isMobile) return;
+
     const onScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
 
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [isMobile]);
+
+  if (isMobile) {
+    return (
+      <>
+        <header className="fixed top-0 left-0 right-0 bg-gradient-to-b from-[#1B2334] to-[#181F2C] px-6 p-4 z-50 flex justify-between items-center shadow rounded-b-xl">
+          <Link to="/">
+            <span className="text-4xl font-bold text-white tracking-wide">
+              weeb
+            </span>
+          </Link>
+
+          <button
+            aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+            className="text-white text-3xl bg-purple-600 p-2 rounded-lg z-70"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? (
+              <X className="size-10 " />
+            ) : (
+              <Menu className="size-10" />
+            )}
+          </button>
+        </header>
+
+        {menuOpen && (
+          <div className="fixed inset-0 bg-[#1B2334] bg-opacity-95 z-60 flex flex-col items-center justify-center space-y-10 text-white text-2xl">
+            <button
+              aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+              className="text-white text-3xl bg-purple-600 p-2 rounded-lg fixed top-4 right-6"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              {menuOpen ? (
+                <X className="size-10 " />
+              ) : (
+                <Menu className="size-10" />
+              )}
+            </button>
+            <Link
+              to="/about"
+              onClick={() => setMenuOpen(false)}
+              className="hover:underline"
+            >
+              A propos
+            </Link>
+            <Link
+              to="/contact"
+              onClick={() => setMenuOpen(false)}
+              className="hover:underline"
+            >
+              Nous contacter
+            </Link>
+            <Link
+              to="/login"
+              onClick={() => setMenuOpen(false)}
+              className="hover:underline"
+            >
+              Se connecter
+            </Link>
+            <Button
+              to="/signup"
+              primary
+              text="Rejoindre maintenant"
+              onClick={() => setMenuOpen(false)}
+            />
+          </div>
+        )}
+      </>
+    );
+  }
 
   return (
     <header

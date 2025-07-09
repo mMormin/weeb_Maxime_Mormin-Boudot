@@ -9,6 +9,7 @@ interface ButtonProps {
   primary?: boolean;
   compact?: boolean;
   type?: "button" | "submit" | "reset";
+  onClick?: () => void;
   children?: ReactNode;
 }
 
@@ -19,6 +20,7 @@ const Button = ({
   compact = false,
   reverseAnimation = false,
   children,
+  onClick,
   ...props
 }: ButtonProps) => {
   const isExternal = to?.startsWith("http") || to?.startsWith("#");
@@ -45,6 +47,7 @@ const Button = ({
       whileHover={{ scale: hoverScale }}
       whileTap={{ scale: tapScale }}
       className={`${buttonStyles} ${commonStyles}`}
+      onClick={onClick}
       {...props}
     >
       {text ?? children}
