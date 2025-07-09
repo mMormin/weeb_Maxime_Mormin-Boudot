@@ -3,10 +3,10 @@ import image from "../../../assets/image.png";
 
 const Intro = () => {
   return (
-    <section className="text-white py-10 pt-40">
+    <section className="text-white py-10 pt-40 px-10 md:px-0">
       <div className="max-w-4xl mx-auto text-center flex flex-col items-center justify-center gap-15">
         <div>
-          <h1 className="text-large font-extrabold tracking-wide leading-20">
+          <h1 className="text-6xl md:text-large font-extrabold tracking-wide leading-16 md:leading-20">
             Explorez le <span className="font-light text-secondary">Web</span>{" "}
             sous toutes
             <br />
@@ -16,7 +16,7 @@ const Intro = () => {
             </span>
           </h1>
 
-          <p className="text-xl leading-8 tracking-wide my-10">
+          <p className="md:text-xl text-lg md:leading-8 tracking-wide my-10 text-justify md:text-left">
             Le monde du web évolue constamment, et nous sommes là pour vous
             guider à travers ses tendances, technologies et meilleures
             pratiques. Que vous soyez développeur, designer ou passionné du
@@ -31,7 +31,11 @@ const Intro = () => {
           </div>
         </div>
 
-        <img src={image} alt="Illustration" className="w-full" />
+        <img
+          src={image}
+          alt="Illustration d'un navigateur"
+          className="size-auto max-w-[1100px] w-full"
+        />
       </div>
     </section>
   );

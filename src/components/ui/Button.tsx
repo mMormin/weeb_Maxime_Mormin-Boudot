@@ -28,7 +28,7 @@ const Button = ({
     : "bg-primary text-white border-white border-2";
 
   const commonStyles = [
-    compact ? "px-4 py-1 text-base" : "px-6 py-3 text-xl",
+    compact ? "px-4 py-1 text-base" : "md:px-6 px-3 py-3 md:text-xl",
     "tracking-wider",
     "rounded-lg",
     "transition-colors",

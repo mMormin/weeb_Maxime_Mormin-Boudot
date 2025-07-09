@@ -85,13 +85,13 @@ const VibratingIcon = ({
 
 const Footer = () => {
   return (
-    <footer className="bg-white mt-12 px-6 md:px-20 py-15">
-      <div className="flex flex-col md:flex-row justify-between mb-15 gap-40">
-        <Link to="/" className="mb-8 md:mb-0">
+    <footer className="bg-white mt-12 px-10 md:px-20 py-15">
+      <div className="flex flex-col md:flex-row justify-between mb-15 md:gap-40">
+        <Link to="/" className="mb-8 md:mb-0 text-center md:text-left">
           <span className="font-bold text-3xl text-black">weeb</span>
         </Link>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-60 mr-40">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-60 md:mr-40 text-center md:text-left">
           {Object.entries(footerLinks).map(([section, links]) => (
             <div key={section}>
               <h3 className="font-medium text-blue tracking-wide uppercase mb-5">

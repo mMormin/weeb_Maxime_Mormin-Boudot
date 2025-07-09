@@ -10,6 +10,11 @@
   --text-large: 4.375rem;
 }
 
+html,
+body {
+  overflow-x: hidden;
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
