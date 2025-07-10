@@ -7,13 +7,18 @@ import { routeMetas } from "./utils/routeMetas";
 
 function App() {
   const location = useLocation();
-  const meta = routeMetas[location.pathname];
+  const meta = routeMetas[location.pathname] ?? {
+    title: "Weeb - Explorez le Web",
+    description: "Explorez le Web sous toutes ces facettes.",
+    children: null,
+  };
 
   return (
     <>
       <Helmet>
         <title>{meta.title}</title>
         <meta name="description" content={meta.description} />
+        {meta.children}
       </Helmet>
 
       <div className="font-roboto bg-primary">
