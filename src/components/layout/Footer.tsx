@@ -10,7 +10,11 @@ import {
 } from "react-icons/fa";
 
 // List of social media links with icons and URLs
-const socialLinks = [
+const socialLinks: {
+  label: string;
+  Icon: React.ElementType;
+  href: string;
+}[] = [
   { label: "YouTube", Icon: FaYoutube, href: "https://youtube.com" },
   { label: "Facebook", Icon: FaFacebookF, href: "https://facebook.com" },
   { label: "X", Icon: FaTwitter, href: "https://twitter.com" },
@@ -19,7 +23,12 @@ const socialLinks = [
 ];
 
 // Footer navigation links grouped by category
-const footerLinks = {
+const footerLinks: {
+  [category: string]: {
+    label: string;
+    href: string;
+  }[];
+} = {
   Product: [
     { label: "Pricing", href: "/pricing" },
     { label: "Overview", href: "/overview" },
