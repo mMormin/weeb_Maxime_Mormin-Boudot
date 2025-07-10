@@ -1,4 +1,5 @@
 import { motion, useAnimationFrame, useMotionValue } from "motion/react";
+import { Link } from "react-router";
 import { useState } from "react";
 import {
   FaYoutube,
@@ -7,9 +8,13 @@ import {
   FaInstagram,
   FaLinkedinIn,
 } from "react-icons/fa";
-import { Link } from "react-router";
 
-const socialLinks = [
+// List of social media links with icons and URLs
+const socialLinks: {
+  label: string;
+  Icon: React.ElementType;
+  href: string;
+}[] = [
   { label: "YouTube", Icon: FaYoutube, href: "https://youtube.com" },
   { label: "Facebook", Icon: FaFacebookF, href: "https://facebook.com" },
   { label: "X", Icon: FaTwitter, href: "https://twitter.com" },
@@ -17,7 +22,13 @@ const socialLinks = [
   { label: "LinkedIn", Icon: FaLinkedinIn, href: "https://linkedin.com" },
 ];
 
-const footerLinks = {
+// Footer navigation links grouped by category
+const footerLinks: {
+  [category: string]: {
+    label: string;
+    href: string;
+  }[];
+} = {
   Product: [
     { label: "Pricing", href: "/pricing" },
     { label: "Overview", href: "/overview" },
@@ -44,6 +55,7 @@ const footerLinks = {
   ],
 };
 
+// Footer navigation links grouped by category
 const VibratingIcon = ({
   Icon,
   label,
@@ -57,6 +69,7 @@ const VibratingIcon = ({
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
+  // Animate the icon's position randomly while hovered to create a vibration effect
   useAnimationFrame(() => {
     if (hovered) {
       x.set((Math.random() - 0.5) * 2);
@@ -83,6 +96,7 @@ const VibratingIcon = ({
   );
 };
 
+// Main Footer component
 const Footer = () => {
   return (
     <footer className="bg-white mt-12 px-10 md:px-20 py-15">

@@ -6,6 +6,7 @@ import { Link } from "react-router";
 import { RiErrorWarningFill } from "react-icons/ri";
 
 const ContactForm = () => {
+  // Formik initialization
   const formik = useFormik({
     initialValues: {
       email: "",

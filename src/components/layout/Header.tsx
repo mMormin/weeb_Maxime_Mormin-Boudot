@@ -5,10 +5,15 @@ import { Menu, X } from "lucide-react";
 import { useMediaQuery } from "../../utils/mediaQuery";
 
 const Header = () => {
+  // State to track if the user has scrolled
   const [isScrolled, setIsScrolled] = useState(false);
+  // State to track whether the mobile menu is open
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // Custom hook to detect screen size (mobile if width <= 1024px)
   const isMobile = useMediaQuery("(max-width: 1024px)");
 
+  // Scroll listener to trigger scrolled Header style
   useEffect(() => {
     if (isMobile) return;
 
@@ -20,6 +25,7 @@ const Header = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, [isMobile]);
 
+  // Mobile Header
   if (isMobile) {
     return (
       <>
@@ -31,15 +37,11 @@ const Header = () => {
           </Link>
 
           <button
-            aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
-            className="text-white text-3xl bg-purple-600 p-2 rounded-lg z-70"
+            aria-label="Ouvrir le menu"
+            className="text-white text-3xl bg-purple-600 p-2 rounded-lg"
             onClick={() => setMenuOpen(!menuOpen)}
           >
-            {menuOpen ? (
-              <X className="size-10 " />
-            ) : (
-              <Menu className="size-10" />
-            )}
+            <Menu className="size-10" />
           </button>
         </header>
 
@@ -56,6 +58,7 @@ const Header = () => {
                 <Menu className="size-10" />
               )}
             </button>
+
             <Link
               to="/about"
               onClick={() => setMenuOpen(false)}
@@ -63,6 +66,7 @@ const Header = () => {
             >
               A propos
             </Link>
+
             <Link
               to="/contact"
               onClick={() => setMenuOpen(false)}
@@ -70,6 +74,7 @@ const Header = () => {
             >
               Nous contacter
             </Link>
+
             <Link
               to="/login"
               onClick={() => setMenuOpen(false)}
@@ -77,6 +82,7 @@ const Header = () => {
             >
               Se connecter
             </Link>
+
             <Button
               to="/signup"
               primary
@@ -89,6 +95,7 @@ const Header = () => {
     );
   }
 
+  // Desktop Header
   return (
     <header
       className={`fixed left-0 right-0 z-50 ${

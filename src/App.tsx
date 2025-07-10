@@ -1,19 +1,36 @@
 import Header from "./components/layout/Header";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import "./index.css";
 import Footer from "./components/layout/Footer";
+import { Helmet } from "react-helmet-async";
+import { routeMetas } from "./utils/routeMetas";
 
 function App() {
+  const location = useLocation();
+  const meta = routeMetas[location.pathname] ?? {
+    title: "Weeb - Explorez le Web",
+    description: "Explorez le Web sous toutes ces facettes.",
+    children: null,
+  };
+
   return (
-    <div className="font-roboto bg-primary">
-      <Header />
+    <>
+      <Helmet>
+        <title>{meta.title}</title>
+        <meta name="description" content={meta.description} />
+        {meta.children}
+      </Helmet>
 
-      <main className="bg-primary ">
-        <Outlet />
-      </main>
+      <div className="font-roboto bg-primary">
+        <Header />
 
-      <Footer />
-    </div>
+        <main className="bg-primary ">
+          <Outlet />
+        </main>
+
+        <Footer />
+      </div>
+    </>
   );
 }
 

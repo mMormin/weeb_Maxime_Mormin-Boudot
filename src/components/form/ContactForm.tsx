@@ -5,6 +5,7 @@ import { RiErrorWarningFill } from "react-icons/ri";
 import { getInputClass } from "../../utils/inputClasses";
 
 const ContactForm = () => {
+  // Formik initialization
   const formik = useFormik({
     initialValues: {
       lastName: "",
