@@ -3,14 +3,17 @@ import { motion } from "motion/react";
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 
+// Create a motion-enabled version of the ArrowRight icon
 const MotionArrow = motion.create(ArrowRight);
 
+// ArrowLink component props
 interface ArrowLinkProps {
   to: string;
   text: string;
 }
 
 const ArrowLink = ({ to, text }: ArrowLinkProps) => {
+  // Track whether the user is hovering over the link
   const [hovered, setHovered] = useState(false);
 
   return (

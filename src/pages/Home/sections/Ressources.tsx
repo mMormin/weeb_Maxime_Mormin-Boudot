@@ -4,6 +4,7 @@ import Button from "../../../components/ui/Button";
 import { useMediaQuery } from "../../../utils/mediaQuery";
 
 const Ressources = () => {
+  // Custom hook to detect screen size (mobile if width <= 1024px)
   const isMobile = useMediaQuery("(max-width: 1024px)");
 
   return (
