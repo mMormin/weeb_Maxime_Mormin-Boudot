@@ -7,8 +7,9 @@ const Intro = () => {
       <div className="max-w-4xl mx-auto text-center flex flex-col items-center justify-center gap-15">
         <div>
           <h1 className="text-6xl md:text-large font-extrabold tracking-wide leading-16 md:leading-20">
-            Explorez le <span className="font-light text-secondary">Web</span>{" "}
-            sous toutes
+            Explorez le{" "}
+            <span className="font-extrabold text-secondary">Web</span> sous
+            toutes
             <br />
             ses{" "}
             <span className="underline underline-offset-10 decoration-[4px] decoration-secondary">
