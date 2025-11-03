@@ -9,6 +9,7 @@ import Contact from "./pages/Contact/index";
 import Login from "./pages/Login/index";
 import "./index.css";
 import Articles from "./pages/Articles";
+import Article from "./pages/Article";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -20,6 +21,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="contact" element={<Contact />} />
             <Route path="login" element={<Login />} />
             <Route path="articles" element={<Articles />} />
+            <Route path="articles/:slug" element={<Article />} />
           </Route>
         </Routes>
       </BrowserRouter>

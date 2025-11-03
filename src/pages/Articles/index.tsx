@@ -1,142 +1,6 @@
 import img from "../../assets/img.jpg";
-
-interface Article {
-  id: number;
-  title: string;
-  date: string;
-  image: string;
-  summary: string;
-  category: string;
-  size?: "small" | "medium" | "large";
-}
-
-const articles: Article[] = [
-  {
-    id: 1,
-    title:
-      "Les tendances du web en 2025 : Une révolution technologique à venir",
-    date: "3 novembre 2025",
-    image: "/assets/img.jpg",
-    summary:
-      "Découvrez les technologies qui façonneront l'avenir du développement web cette année. Avec l'avènement de l'IA, des frameworks plus performants et des standards web évolutifs, les développeurs doivent s'adapter à un écosystème en constante mutation. Cet article explore en détail les innovations clés, telles que les API modernes, les outils de collaboration et les pratiques de développement durable, pour vous aider à rester à la pointe de la technologie.",
-    category: "Technologie",
-    size: "large",
-  },
-  {
-    id: 2,
-    title:
-      "React 19 : Nouveautés et améliorations majeures pour les développeurs",
-    date: "2 novembre 2025",
-    image: "/assets/img.jpg",
-    summary:
-      "Un aperçu des nouvelles fonctionnalités de React 19 et leur impact sur les applications modernes.",
-    category: "Développement",
-    size: "medium",
-  },
-  {
-    id: 3,
-    title:
-      "L'importance de l'accessibilité web : Clés pour une inclusion numérique",
-    date: "1 novembre 2025",
-    image: "/assets/img.jpg",
-    summary:
-      "Pourquoi l'accessibilité est essentielle et comment l'intégrer dans vos projets web.",
-    category: "Accessibilité",
-    size: "small",
-  },
-  {
-    id: 4,
-    title:
-      "Optimisation des performances avec Vite : Accélérer vos applications web",
-    date: "31 octobre 2025",
-    image: "/assets/img.jpg",
-    summary:
-      "Comment tirer parti de Vite pour des applications web ultra-rapides.",
-    category: "Performance",
-    size: "small",
-  },
-  {
-    id: 5,
-    title:
-      "Le futur du CSS avec les nouvelles spécifications : Innovations et adoption",
-    date: "30 octobre 2025",
-    image: "/assets/img.jpg",
-    summary:
-      "Explorer les avancées récentes en CSS et leur adoption dans les navigateurs.",
-    category: "CSS",
-    size: "medium",
-  },
-  {
-    id: 6,
-    title: "Protéger vos applications contre les menaces modernes",
-    date: "29 octobre 2025",
-    image: "/assets/img.jpg",
-    summary:
-      "Les meilleures pratiques pour sécuriser vos sites web contre les menaces courantes.",
-    category: "Sécurité",
-    size: "small",
-  },
-  {
-    id: 7,
-    title: "TypeScript 5.0 : Les nouveautés qui changent tout",
-    date: "28 octobre 2025",
-    image: "/assets/img.jpg",
-    summary:
-      "Découvrez les améliorations majeures de TypeScript 5.0 et comment elles peuvent améliorer votre code.",
-    category: "Développement",
-    size: "small",
-  },
-  {
-    id: 8,
-    title: "Les tendances en UI/UX Design ne cessent d'évoluer !",
-    date: "27 octobre 2025",
-    image: "/assets/img.jpg",
-    summary:
-      "Les tendances en design d'interface et d'expérience utilisateur qui marquent l'année 2025.",
-    category: "Design",
-    size: "small",
-  },
-  {
-    id: 9,
-    title: "Node.js : Meilleures pratiques pour le backend",
-    date: "26 octobre 2025",
-    image: "/assets/img.jpg",
-    summary:
-      "Guide complet des meilleures pratiques pour développer des applications backend robustes avec Node.js.",
-    category: "Développement",
-    size: "small",
-  },
-  {
-    id: 10,
-    title: "Web3 et Blockchain : L'avenir du web décentralisé",
-    date: "25 octobre 2025",
-    image: "/assets/img.jpg",
-    summary:
-      "Comprendre les concepts du Web3 et comment la blockchain transforme Internet.",
-    category: "Technologie",
-    size: "small",
-  },
-  {
-    id: 11,
-    title: "Architecture Microservices : Guide pratique",
-    date: "24 octobre 2025",
-    image: "/assets/img.jpg",
-    summary:
-      "Comment concevoir et implémenter une architecture microservices efficace pour vos applications.",
-    category: "Architecture",
-    size: "small",
-  },
-  {
-    id: 12,
-    title: "Tests automatisés : Stratégies et outils",
-    date: "23 octobre 2025",
-    image: "/assets/img.jpg",
-    summary:
-      "Les meilleures stratégies et outils pour automatiser vos tests et garantir la qualité du code.",
-    category: "Testing",
-    size: "medium",
-  },
-];
+import { useNavigate } from "react-router";
+import { articles, getArticleSlug } from "../../data/articles";
 
 const getCategoryColor = (category: string) => {
   switch (category) {
@@ -176,6 +40,8 @@ const getArticleSpan = (size?: string) => {
 };
 
 const Articles = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="text-white py-10 pt-30 px-10 xl:px-0">
       <div className="max-w-7xl mx-auto">
@@ -187,6 +53,7 @@ const Articles = () => {
           {articles.map((article) => (
             <div
               key={article.id}
+              onClick={() => navigate(`/articles/${getArticleSlug(article)}`)}
               className={`bg-gray-800/50 rounded-lg overflow-hidden shadow hover:shadow-xl min-h-56 transition-all duration-300 flex flex-col cursor-pointer group hover:scale-102 ${getArticleSpan(
                 article.size
               )} ${article.size === "large" ? "p-6" : ""}`}
