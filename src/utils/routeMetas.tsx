@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-// Type describing SEO metadata for each route
+// Type décrivant les métadonnées SEO pour chaque route
 type Metas = {
   title: string;
   description: string;
@@ -9,7 +9,7 @@ type Metas = {
   children?: ReactNode;
 };
 
-// List of SEO data for each route
+// Données SEO pour chaque route de l'application
 export const seoDatas: Array<{
   path: string;
   title: string;
@@ -31,21 +31,29 @@ export const seoDatas: Array<{
     title: "Connexion - Weeb",
     description: "Connectez-vous à votre compte Weeb en un clin d'oeil.",
   },
+  {
+    path: "/articles",
+    title: "Articles - Weeb",
+    description:
+      "Découvrez nos articles sur le développement web, les technologies et les meilleures pratiques.",
+  },
 ];
 
+// URL de base selon l'environnement (dev/prod)
 export const BASE_URL = import.meta.env.DEV
   ? "http://localhost:5173"
   : "https://weeb.fr";
 
+// Génère les métadonnées SEO pour chaque route
 export const routeMetas: Record<string, Metas> = Object.fromEntries(
   seoDatas.map(({ path, title, description }) => {
     const fullUrl = `${BASE_URL}${path}`;
     const ogImage = `${BASE_URL}/cover.png`;
 
-    // Default SEO tags
+    // Balises SEO par défaut (OG + Twitter)
     const defaultChildren = (
       <>
-        {/* Canonical */}
+        {/* URL canonique */}
         <link rel="canonical" href={fullUrl} />
 
         {/* Open Graph */}
@@ -55,7 +63,7 @@ export const routeMetas: Record<string, Metas> = Object.fromEntries(
         <meta property="og:url" content={fullUrl} />
         <meta property="og:image" content={ogImage} />
 
-        {/* Twitter */}
+        {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
@@ -70,7 +78,7 @@ export const routeMetas: Record<string, Metas> = Object.fromEntries(
         description,
         ogTitle: title,
         ogDescription: description,
-        // Noindex meta tag to prevent search engines from indexing the contact page
+        // Noindex pour la page contact (pas d'indexation)
         children:
           path === "/contact" ? (
             <>

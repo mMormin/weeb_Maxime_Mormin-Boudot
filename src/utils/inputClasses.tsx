@@ -1,10 +1,10 @@
 import clsx from "clsx";
 
-// Common styles shared by all input fields
+// Classes communes partagées par tous les champs de formulaire
 const commonInputClass =
   "w-full p-2 border-2 border-transparent text-white tracking-wider text-2xl text-center transition-all outline-none caret-purple-400";
 
-// Returns input class based on error state
+// Retourne les classes CSS d'un input selon son état d'erreur
 export function getInputClass(hasError: boolean) {
   return clsx(
     commonInputClass,

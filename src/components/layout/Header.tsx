@@ -4,16 +4,17 @@ import Button from "../ui/Button";
 import { Menu, X } from "lucide-react";
 import { useMediaQuery } from "../../utils/mediaQuery";
 
+// Header responsive avec navigation desktop et mobile
 const Header = () => {
-  // State to track if the user has scrolled
+  // Détecte si l'utilisateur a scrollé (pour style condensé)
   const [isScrolled, setIsScrolled] = useState(false);
-  // State to track whether the mobile menu is open
+  // Contrôle l'ouverture du menu mobile
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Custom hook to detect screen size (mobile if width <= 1024px)
+  // Détection du breakpoint mobile (≤1024px)
   const isMobile = useMediaQuery("(max-width: 1024px)");
 
-  // Scroll listener to trigger scrolled Header style
+  // Écoute du scroll pour déclencher le style condensé
   useEffect(() => {
     if (isMobile) return;
 
@@ -25,10 +26,11 @@ const Header = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, [isMobile]);
 
-  // Mobile Header
+  // Version mobile du header
   if (isMobile) {
     return (
       <>
+        {/* Barre de navigation fixe mobile */}
         <header className="fixed top-0 left-0 right-0 bg-gradient-to-b from-[#1B2334] to-[#181F2C] px-6 p-4 z-50 flex justify-between items-center shadow rounded-b-xl">
           <Link to="/">
             <span className="text-4xl font-bold text-white tracking-wide">
@@ -36,6 +38,7 @@ const Header = () => {
             </span>
           </Link>
 
+          {/* Bouton hamburger */}
           <button
             aria-label="Ouvrir le menu"
             className="text-white text-3xl bg-purple-600 p-2 rounded-lg"
@@ -45,8 +48,10 @@ const Header = () => {
           </button>
         </header>
 
+        {/* Menu plein écran mobile */}
         {menuOpen && (
           <div className="fixed inset-0 bg-[#1B2334] bg-opacity-95 z-60 flex flex-col items-center justify-center space-y-10 text-white text-2xl">
+            {/* Bouton fermeture */}
             <button
               aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
               className="text-white text-3xl bg-purple-600 p-2 rounded-lg fixed top-4 right-6"
@@ -59,6 +64,7 @@ const Header = () => {
               )}
             </button>
 
+            {/* Liens de navigation */}
             <Link
               to="/about"
               onClick={() => setMenuOpen(false)}
@@ -95,7 +101,7 @@ const Header = () => {
     );
   }
 
-  // Desktop Header
+  // Version desktop du header
   return (
     <header
       className={`fixed left-0 right-0 z-50 ${
@@ -104,6 +110,7 @@ const Header = () => {
           : "top-5 transition-top duration-100"
       }`}
     >
+      {/* Navigation avec style condensé au scroll */}
       <nav
         className={`mx-auto flex justify-between items-center space-x-6 ${
           isScrolled
@@ -111,6 +118,7 @@ const Header = () => {
             : "w-full py-4"
         }`}
       >
+        {/* Logo et liens principaux */}
         <div className="flex justify-center items-center">
           <Link to="/">
             <span className="text-3xl font-bold text-white mr-12">weeb</span>
@@ -127,6 +135,7 @@ const Header = () => {
           </div>
         </div>
 
+        {/* Actions utilisateur */}
         <div className="flex space-x-6 items-center justify-center">
           <Link to="/login" className="text-white hover:underline">
             Se connecter

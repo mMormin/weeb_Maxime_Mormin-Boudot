@@ -1,3 +1,4 @@
+// Interface définissant la structure d'un article
 export interface Article {
   id: number;
   title: string;
@@ -11,24 +12,24 @@ export interface Article {
   content?: string[];
 }
 
-// Fonction pour générer un slug à partir d'un titre
+// Génère un slug URL-friendly à partir d'un titre
 export const generateSlug = (title: string): string => {
   return title
     .toLowerCase()
     .normalize("NFD") // Décompose les caractères accentués
     .replace(/[\u0300-\u036f]/g, "") // Supprime les accents
-    .replace(/[^a-z0-9\s-]/g, "") // Garde uniquement lettres, chiffres, espaces et tirets
+    .replace(/[^a-z0-9\s-]/g, "") // Garde lettres, chiffres, espaces, tirets
     .trim()
-    .replace(/\s+/g, "-") // Remplace les espaces par des tirets
-    .replace(/-+/g, "-"); // Remplace les tirets multiples par un seul
+    .replace(/\s+/g, "-") // Remplace espaces par tirets
+    .replace(/-+/g, "-"); // Évite les tirets multiples
 };
 
-// Fonction pour obtenir le slug d'un article
+// Retourne le slug d'un article
 export const getArticleSlug = (article: Article): string => {
   return generateSlug(article.title);
 };
 
-// Données des articles
+// Données statiques des articles (mock)
 export const articles: Article[] = [
   {
     id: 1,

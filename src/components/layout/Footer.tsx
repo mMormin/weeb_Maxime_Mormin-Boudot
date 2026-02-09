@@ -9,7 +9,7 @@ import {
   FaLinkedinIn,
 } from "react-icons/fa";
 
-// List of social media links with icons and URLs
+// Liens vers les réseaux sociaux
 const socialLinks: {
   label: string;
   Icon: React.ElementType;
@@ -22,7 +22,7 @@ const socialLinks: {
   { label: "LinkedIn", Icon: FaLinkedinIn, href: "https://linkedin.com" },
 ];
 
-// Footer navigation links grouped by category
+// Liens de navigation groupés par catégorie
 const footerLinks: {
   [category: string]: {
     label: string;
@@ -55,7 +55,7 @@ const footerLinks: {
   ],
 };
 
-// Footer navigation links grouped by category
+// Icône avec effet de vibration au survol
 const VibratingIcon = ({
   Icon,
   label,
@@ -69,7 +69,7 @@ const VibratingIcon = ({
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // Animate the icon's position randomly while hovered to create a vibration effect
+  // Animation de position aléatoire pour effet vibration
   useAnimationFrame(() => {
     if (hovered) {
       x.set((Math.random() - 0.5) * 2);
@@ -96,15 +96,17 @@ const VibratingIcon = ({
   );
 };
 
-// Main Footer component
+// Composant Footer principal
 const Footer = () => {
   return (
     <footer className="bg-white mt-12 px-10 md:px-20 py-15">
+      {/* Section supérieure : Logo + Navigation */}
       <div className="flex flex-col md:flex-row justify-between mb-15 md:gap-40">
         <Link to="/" className="mb-8 md:mb-0 text-center md:text-left">
           <span className="font-bold text-3xl text-black">weeb</span>
         </Link>
 
+        {/* Grille de liens par catégorie */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-60 md:mr-40 text-center md:text-left">
           {Object.entries(footerLinks).map(([section, links]) => (
             <div key={section}>
@@ -131,11 +133,13 @@ const Footer = () => {
 
       <hr className="border-primary/10" />
 
+      {/* Section inférieure : Copyright + Réseaux sociaux */}
       <div className="flex flex-col md:flex-row justify-between items-center px-6 md:px-12 pt-10">
         <p className="text-black mb-4 md:mb-0">
-          @ 2025 Weeb, Inc. All rights reserved.
+          @ {new Date().getFullYear()} Weeb, Inc. All rights reserved.
         </p>
 
+        {/* Icônes réseaux sociaux */}
         <div className="flex space-x-4 text-black text-lg">
           {socialLinks.map(({ label, Icon, href }) => (
             <VibratingIcon key={label} Icon={Icon} href={href} label={label} />

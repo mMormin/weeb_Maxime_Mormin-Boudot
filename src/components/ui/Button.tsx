@@ -2,18 +2,19 @@ import { motion } from "motion/react";
 import { Link } from "react-router";
 import type { ReactNode } from "react";
 
-// Button component props
+// Props du composant Button
 interface ButtonProps {
   text: string;
   to?: string;
-  reverseAnimation?: boolean; // Inverts the hover/tap scale
-  primary?: boolean; // Toggles primary style
-  compact?: boolean; // Smaller padding & font Button
+  reverseAnimation?: boolean; // Inverse l'effet de scale au hover/tap
+  primary?: boolean; // Style primaire (violet)
+  compact?: boolean; // Version compacte (padding réduit)
   type?: "button" | "submit" | "reset";
   onClick?: () => void;
   children?: ReactNode;
 }
 
+// Bouton animé avec support navigation interne/externe
 const Button = ({
   text,
   to,
@@ -24,15 +25,15 @@ const Button = ({
   onClick,
   ...props
 }: ButtonProps) => {
-  // Determines if the link is external (http or anchor)
+  // Détecte si le lien est externe (http) ou ancre (#)
   const isExternal = to?.startsWith("http") || to?.startsWith("#");
 
-  // Base style depending on primary flag
+  // Style de base selon le type (primary ou default)
   const buttonStyles = primary
     ? "bg-purple-600 text-white border-purple-600 border-2 hover:bg-purple-700 hover:border-purple-700"
     : "bg-primary text-white border-white border-2";
 
-  // Shared utility classes
+  // Classes utilitaires communes
   const commonStyles = [
     compact ? "px-4 py-1 text-base" : "md:px-6 px-3 py-3 md:text-xl",
     "tracking-wider",
@@ -43,11 +44,11 @@ const Button = ({
 
   const MotionElem = motion.button;
 
-  // Defines scaling animation direction
+  // Direction de l'animation de scale
   const hoverScale = reverseAnimation ? 0.95 : 1.05;
   const tapScale = reverseAnimation ? 1.05 : 0.95;
 
-  // The animated button content
+  // Contenu animé du bouton
   const content = (
     <MotionElem
       whileHover={{ scale: hoverScale }}
@@ -60,12 +61,12 @@ const Button = ({
     </MotionElem>
   );
 
-  // If no "to" prop, just return the button
+  // Sans lien, retourne le bouton seul
   if (!to) {
     return content;
   }
 
-  // If external link, wrap in <a>
+  // Lien externe : wrapper <a> avec target blank
   if (isExternal) {
     return (
       <a
@@ -79,7 +80,7 @@ const Button = ({
     );
   }
 
-  // Otherwise, use <Link> for internal navigation
+  // Lien interne : utilise React Router Link
   return (
     <Link to={to} className="inline-block">
       {content}

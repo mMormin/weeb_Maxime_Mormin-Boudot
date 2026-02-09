@@ -11,10 +11,13 @@ import "./index.css";
 import Articles from "./pages/Articles";
 import Article from "./pages/Article";
 
+// Point d'entrée de l'application React
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
+    {/* Provider pour la gestion SEO */}
     <HelmetProvider>
       <BrowserRouter>
+        {/* Configuration des routes */}
         <Routes>
           <Route path="/" element={<App />}>
             <Route index element={<Home />} />

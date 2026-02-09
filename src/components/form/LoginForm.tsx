@@ -4,28 +4,56 @@ import Button from "../ui/Button";
 import { getInputClass } from "../../utils/inputClasses";
 import { Link } from "react-router";
 import { RiErrorWarningFill } from "react-icons/ri";
+import { api, API_ENDPOINTS } from "../../config/api";
+import { useState } from "react";
 
-const ContactForm = () => {
-  // Formik initialization
+// Formulaire de connexion utilisateur
+const LoginForm = () => {
+  // État pour gérer le retour utilisateur après soumission
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({ type: null, message: "" });
+
+  // Configuration Formik avec valeurs initiales et validation
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
+    // Schéma de validation des champs
     validationSchema: Yup.object({
       email: Yup.string()
         .email("Adresse email non valide.")
         .required("Saisissez votre adresse email."),
-      password: Yup.string().required("Saisissez votre mot de passe. "),
+      password: Yup.string().required("Saisissez votre mot de passe."),
     }),
-    onSubmit: (values) => {
-      console.log("Form submitted:", values);
+    // Envoi des identifiants à l'API
+    onSubmit: async (values, { setSubmitting }) => {
+      setSubmitStatus({ type: null, message: "" });
+
+      try {
+        await api.post(API_ENDPOINTS.login, values);
+        setSubmitStatus({
+          type: "success",
+          message: "Connexion réussie !",
+        });
+        // TODO: Redirection vers dashboard après connexion
+      } catch {
+        setSubmitStatus({
+          type: "error",
+          message: "Une erreur est survenue",
+        });
+      } finally {
+        setSubmitting(false);
+      }
     },
   });
 
   return (
     <form onSubmit={formik.handleSubmit}>
       <div className="space-y-9 md:space-y-3 text-white">
+        {/* Champ email */}
         <div>
           <label className="sr-only">Email</label>
           <input
@@ -39,6 +67,7 @@ const ContactForm = () => {
               !!(formik.touched.email && formik.errors.email)
             )}
           />
+          {/* Affichage erreur email */}
           <div className="text-left text-red-400 text-sm h-5 mt-1">
             {formik.touched.email && formik.errors.email && (
               <span className="flex gap-2">
@@ -49,10 +78,11 @@ const ContactForm = () => {
           </div>
         </div>
 
+        {/* Champ mot de passe */}
         <div>
-          <label className="sr-only">Prénom</label>
+          <label className="sr-only">Mot de passe</label>
           <input
-            type="text"
+            type="password"
             name="password"
             placeholder="Mot de passe"
             onChange={formik.handleChange}
@@ -62,6 +92,7 @@ const ContactForm = () => {
               !!(formik.touched.password && formik.errors.password)
             )}
           />
+          {/* Affichage erreur mot de passe */}
           <div className="text-left text-red-400 text-sm h-5 mt-1">
             {formik.touched.password && formik.errors.password && (
               <span className="flex gap-2">
@@ -73,10 +104,30 @@ const ContactForm = () => {
         </div>
       </div>
 
+      {/* Notification succès/erreur après soumission */}
+      {submitStatus.type && (
+        <div
+          className={`text-center p-4 rounded-lg mb-4 ${
+            submitStatus.type === "success"
+              ? "bg-green-500/20 text-green-400"
+              : "bg-red-500/20 text-red-400"
+          }`}
+        >
+          {submitStatus.message}
+        </div>
+      )}
+
+      {/* Bouton de connexion */}
       <div className="text-center mt-10">
-        <Button type="submit" text="Se Connecter" primary reverseAnimation />
+        <Button
+          type="submit"
+          text={formik.isSubmitting ? "Connexion..." : "Se Connecter"}
+          primary
+          reverseAnimation
+        />
       </div>
 
+      {/* Liens secondaires */}
       <div className="flex flex-col mt-10 md:my-10 tracking-wider space-y-6 justify-center items-center">
         <Link
           to="#"
@@ -86,7 +137,7 @@ const ContactForm = () => {
         </Link>
 
         <p className="md:text-xs md:w-[50%]">
-          Vous n’avez pas de compte ? Vous pouvez en{" "}
+          Vous n'avez pas de compte ? Vous pouvez en{" "}
           <span className="underline underline-offset-4 cursor-pointer hover:no-underline hover:text-secondary">
             créer un gratuitement
           </span>
@@ -97,4 +148,4 @@ const ContactForm = () => {
   );
 };
 
-export default ContactForm;
+export default LoginForm;

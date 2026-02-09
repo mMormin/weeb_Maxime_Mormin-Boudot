@@ -1,38 +1,18 @@
 import { useParams, useNavigate } from "react-router";
 import img from "../../assets/img.jpg";
 import { articles, getArticleSlug } from "../../data/articles";
+import { getCategoryColor } from "../../utils/categoryColors";
 
-const getCategoryColor = (category: string) => {
-  switch (category) {
-    case "Technologie":
-      return "bg-red-500";
-    case "Développement":
-      return "bg-blue-500";
-    case "Accessibilité":
-      return "bg-green-500";
-    case "Performance":
-      return "bg-yellow-500";
-    case "CSS":
-      return "bg-purple-500";
-    case "Sécurité":
-      return "bg-orange-500";
-    case "Design":
-      return "bg-pink-500";
-    case "Architecture":
-      return "bg-indigo-500";
-    case "Testing":
-      return "bg-teal-500";
-    default:
-      return "bg-gray-500";
-  }
-};
-
+// Page de détail d'un article
 const Article = () => {
+  // Récupération du slug depuis l'URL
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
 
+  // Recherche de l'article correspondant au slug
   const article = articles.find((a) => getArticleSlug(a) === slug);
 
+  // Page 404 si article non trouvé
   if (!article) {
     return (
       <section className="text-white py-10 pt-40 px-10 xl:px-0">
@@ -64,7 +44,7 @@ const Article = () => {
           <span className="text-white">{article.title}</span>
         </nav>
 
-        {/* Catégorie */}
+        {/* Badge catégorie */}
         <div className="mb-4">
           <span
             className={`inline-flex items-center px-3 py-1 rounded text-sm font-semibold text-white ${getCategoryColor(
@@ -76,7 +56,7 @@ const Article = () => {
           </span>
         </div>
 
-        {/* Titre */}
+        {/* Titre de l'article */}
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight mb-6">
           {article.title}
         </h1>
@@ -86,7 +66,7 @@ const Article = () => {
           {article.summary}
         </p>
 
-        {/* Métadonnées */}
+        {/* Métadonnées : auteur, date, temps de lecture */}
         <div className="flex items-center gap-4 text-sm text-gray-400 mb-8 pb-8 border-b border-gray-700">
           <span>Par {article.author || "Rédaction"}</span>
           <span>•</span>
@@ -129,10 +109,9 @@ const Article = () => {
           )}
         </div>
 
-        {/* Séparateur */}
         <div className="my-12 border-t border-gray-700"></div>
 
-        {/* Actions */}
+        {/* Actions : retour et partage */}
         <div className="flex justify-between items-center">
           <button
             onClick={() => navigate("/articles")}
@@ -153,6 +132,7 @@ const Article = () => {
             Retour aux articles
           </button>
 
+          {/* Bouton de partage */}
           <div className="flex gap-4">
             <button className="text-gray-400 hover:text-white transition-colors">
               <svg

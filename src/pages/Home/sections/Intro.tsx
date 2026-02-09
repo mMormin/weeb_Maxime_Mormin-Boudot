@@ -1,11 +1,13 @@
 import Button from "../../../components/ui/Button";
 import image from "../../../assets/image.png";
 
+// Section héro avec titre principal et CTA
 const Intro = () => {
   return (
     <section className="text-white py-10 pt-40 px-10 xl:px-0">
       <div className="max-w-4xl mx-auto text-center flex flex-col items-center justify-center gap-15">
         <div>
+          {/* Titre principal avec mise en avant */}
           <h1 className="text-6xl md:text-large font-extrabold tracking-wide leading-16 md:leading-20">
             Explorez le{" "}
             <span className="font-extrabold text-secondary">Web</span> sous
@@ -17,6 +19,7 @@ const Intro = () => {
             </span>
           </h1>
 
+          {/* Description du site */}
           <p className="md:text-xl text-lg md:leading-8 tracking-wide my-10 text-justify md:text-center">
             Le monde du web évolue constamment, et nous sommes là pour vous
             guider à travers ses tendances, technologies et meilleures
@@ -25,13 +28,14 @@ const Intro = () => {
             la pointe.
           </p>
 
+          {/* Boutons d'action */}
           <div className="flex justify-center items-center gap-6">
             <Button primary text="Découvrir les articles" to="/articles" />
-
             <Button text="S'abonner à la newsletter" to="/newsletter" />
           </div>
         </div>
 
+        {/* Illustration principale */}
         <img
           src={image}
           alt="Illustration d'un navigateur"

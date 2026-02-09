@@ -1,32 +1,9 @@
 import img from "../../assets/img.jpg";
 import { useNavigate } from "react-router";
 import { articles, getArticleSlug } from "../../data/articles";
+import { getCategoryColor } from "../../utils/categoryColors";
 
-const getCategoryColor = (category: string) => {
-  switch (category) {
-    case "Technologie":
-      return "bg-red-500";
-    case "Développement":
-      return "bg-blue-500";
-    case "Accessibilité":
-      return "bg-green-500";
-    case "Performance":
-      return "bg-yellow-500";
-    case "CSS":
-      return "bg-purple-500";
-    case "Sécurité":
-      return "bg-orange-500";
-    case "Design":
-      return "bg-pink-500";
-    case "Architecture":
-      return "bg-indigo-500";
-    case "Testing":
-      return "bg-teal-500";
-    default:
-      return "bg-gray-500";
-  }
-};
-
+// Retourne les classes CSS de grille selon la taille de l'article
 const getArticleSpan = (size?: string) => {
   switch (size) {
     case "large":
@@ -39,6 +16,7 @@ const getArticleSpan = (size?: string) => {
   }
 };
 
+// Page listant tous les articles en grille
 const Articles = () => {
   const navigate = useNavigate();
 
@@ -49,6 +27,7 @@ const Articles = () => {
           Articles
         </h1>
 
+        {/* Grille d'articles responsive */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 px-2">
           {articles.map((article) => (
             <div
@@ -58,6 +37,7 @@ const Articles = () => {
                 article.size
               )} ${article.size === "large" ? "p-6" : ""}`}
             >
+              {/* Titre pour article large (au-dessus de l'image) */}
               {article.size === "large" && (
                 <h2
                   className={`font-bold text-white tracking-wider pb-5 group-hover:underline underline-offset-4 ${
@@ -75,6 +55,7 @@ const Articles = () => {
                 </h2>
               )}
 
+              {/* Image de couverture */}
               <img
                 src={img}
                 alt={article.title}
@@ -83,6 +64,7 @@ const Articles = () => {
                 }`}
               />
 
+              {/* Contenu pour articles small/medium */}
               {article.size !== "large" ? (
                 <div className="p-3 flex-1 justify-between flex flex-col gap-1">
                   <div>
@@ -93,6 +75,7 @@ const Articles = () => {
                           : "text-lg leading-6"
                       }`}
                     >
+                      {/* Badge catégorie */}
                       <span
                         className={`inline-block w-4 h-4 rounded mr-2 pt-3 border-black border-2 ${getCategoryColor(
                           article.category
@@ -101,6 +84,7 @@ const Articles = () => {
                       {article.title}
                     </h2>
 
+                    {/* Résumé pour articles medium */}
                     {article.size === "medium" && (
                       <p className="text-gray-300 pt-3 line-clamp-1">
                         {article.summary}
@@ -113,10 +97,10 @@ const Articles = () => {
                 </div>
               ) : (
                 <>
+                  {/* Date et résumé pour article large */}
                   <p className="text-sm text-gray-400 mt-2 text-right">
                     {article.date}
                   </p>
-
                   <p className="text-gray-300 leading-relaxed mt-3 tracking-wide">
                     {article.summary}
                   </p>

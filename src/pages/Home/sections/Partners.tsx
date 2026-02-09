@@ -4,6 +4,7 @@ import logoS from "../../../assets/logos/logo_shells.png";
 import logoW from "../../../assets/logos/logo_waves.png";
 import logoZ from "../../../assets/logos/logo_zoomerr.png";
 
+// Section partenaires avec logos
 const Partners = () => {
   return (
     <section className="text-white py-20 px-10 xl:px-0">
@@ -12,19 +13,16 @@ const Partners = () => {
           Ils nous font confiance
         </h2>
 
+        {/* Grille de logos partenaires */}
         <div className="grid grid-cols-2 gap-10 place-items-center lg:flex lg:flex-row lg:justify-center lg:items-center lg:gap-10">
           <img
             src={logoSf}
             alt="Logo de SmartFinder"
             className="size-auto w-auto"
           />
-
           <img src={logoZ} alt="Logo de Zoomerr" className="size-auto w-auto" />
-
           <img src={logoS} alt="Logo de Shells" className="size-auto w-auto" />
-
           <img src={logoW} alt="Logo de Waves" className="size-auto w-auto" />
-
           <img
             src={logoA}
             alt="Logo de ArtVenue"

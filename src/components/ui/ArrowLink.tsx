@@ -3,17 +3,18 @@ import { motion } from "motion/react";
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 
-// Create a motion-enabled version of the ArrowRight icon
+// Version animée de l'icône flèche
 const MotionArrow = motion.create(ArrowRight);
 
-// ArrowLink component props
+// Props du composant ArrowLink
 interface ArrowLinkProps {
   to: string;
   text: string;
 }
 
+// Lien avec flèche animée au survol
 const ArrowLink = ({ to, text }: ArrowLinkProps) => {
-  // Track whether the user is hovering over the link
+  // État pour détecter le survol
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -26,10 +27,12 @@ const ArrowLink = ({ to, text }: ArrowLinkProps) => {
         to={to}
         className="group inline-flex items-center gap-4 tracking-[0.5px] font-medium text-xl mt-5 transition-ml duration-200 hover:ml-2"
       >
+        {/* Texte avec soulignement au survol */}
         <span className="group-hover:underline underline-offset-4 group-hover:text-secondary group-hover:decoration-white transition-all duration-500">
           {text}
         </span>
 
+        {/* Flèche avec animation de rebond au survol */}
         <MotionArrow
           className="size-4 mt-0.5"
           animate={
