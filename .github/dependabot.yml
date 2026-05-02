@@ -10,10 +10,12 @@ updates:
       - "dependencies"
       - "frontend"
     groups:
-      # Mineurs et patchs regroupés en une seule PR pour éviter le bruit ;
-      # les majeures restent séparées car elles méritent une revue dédiée.
-      minor-and-patch:
+      # Tout regroupé dans une PR hebdo unique (majeures incluses) pour
+      # minimiser le bruit. Au moindre doute sur une majeure, fermer la PR
+      # et la laisser remonter isolément la semaine suivante via `ignore`.
+      all-deps:
         update-types:
+          - "major"
           - "minor"
           - "patch"
 
