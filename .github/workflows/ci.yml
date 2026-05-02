@@ -26,9 +26,10 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        # --no-optional saute sharp (~30 Mo de binaires natifs, utile uniquement
-        # pour scripts/convert-images.mjs en local).
-        run: pnpm install --frozen-lockfile --no-optional
+        # On garde les optionalDependencies : Rollup et sharp publient leurs
+        # binaires natifs via ce mécanisme, et pnpm n'installe que celui qui
+        # correspond à la plateforme courante (Linux x64 ici).
+        run: pnpm install --frozen-lockfile
 
       - name: Lint
         run: pnpm lint
