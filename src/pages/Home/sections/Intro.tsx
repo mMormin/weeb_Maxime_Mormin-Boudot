@@ -1,5 +1,6 @@
 import Button from "../../../components/ui/Button";
-import image from "../../../assets/image.webp";
+import imageSm from "../../../assets/image-600.webp";
+import imageLg from "../../../assets/image-1100.webp";
 
 // Section héro avec titre principal et CTA
 const Intro = () => {
@@ -37,11 +38,13 @@ const Intro = () => {
 
         {/* Illustration principale */}
         <img
-          src={image}
+          src={imageLg}
+          srcSet={`${imageSm} 600w, ${imageLg} 1100w`}
+          sizes="(max-width: 768px) 100vw, 1100px"
           alt="Illustration d'un navigateur"
           className="size-auto max-w-[1100px] w-full"
-          width={1176}
-          height={780}
+          width={1100}
+          height={730}
           fetchPriority="high"
           decoding="async"
         />
