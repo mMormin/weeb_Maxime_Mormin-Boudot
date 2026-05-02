@@ -69,15 +69,11 @@ const VibratingIcon = ({
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // Animation de position aléatoire pour effet vibration
+  // L'animation ne tourne que pendant le survol pour éviter de réveiller le main thread inutilement
   useAnimationFrame(() => {
-    if (hovered) {
-      x.set((Math.random() - 0.5) * 2);
-      y.set((Math.random() - 0.5) * 2);
-    } else {
-      x.set(0);
-      y.set(0);
-    }
+    if (!hovered) return;
+    x.set((Math.random() - 0.5) * 2);
+    y.set((Math.random() - 0.5) * 2);
   });
 
   return (
@@ -89,7 +85,11 @@ const VibratingIcon = ({
       rel="noopener noreferrer"
       style={{ x, y }}
       onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseLeave={() => {
+        setHovered(false);
+        x.set(0);
+        y.set(0);
+      }}
     >
       <Icon />
     </motion.a>
