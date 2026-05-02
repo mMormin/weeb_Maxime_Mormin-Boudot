@@ -1,8 +1,8 @@
-import logoSf from "../../../assets/logos/logo_smart_finder.png";
-import logoA from "../../../assets/logos/logo_artvenue.png";
-import logoS from "../../../assets/logos/logo_shells.png";
-import logoW from "../../../assets/logos/logo_waves.png";
-import logoZ from "../../../assets/logos/logo_zoomerr.png";
+import logoSf from "../../../assets/logos/logo_smart_finder.webp";
+import logoA from "../../../assets/logos/logo_artvenue.webp";
+import logoS from "../../../assets/logos/logo_shells.webp";
+import logoW from "../../../assets/logos/logo_waves.webp";
+import logoZ from "../../../assets/logos/logo_zoomerr.webp";
 
 // Section partenaires avec logos
 const Partners = () => {
@@ -19,14 +19,46 @@ const Partners = () => {
             src={logoSf}
             alt="Logo de SmartFinder"
             className="size-auto w-auto"
+            width={177}
+            height={32}
+            loading="lazy"
+            decoding="async"
           />
-          <img src={logoZ} alt="Logo de Zoomerr" className="size-auto w-auto" />
-          <img src={logoS} alt="Logo de Shells" className="size-auto w-auto" />
-          <img src={logoW} alt="Logo de Waves" className="size-auto w-auto" />
+          <img
+            src={logoZ}
+            alt="Logo de Zoomerr"
+            className="size-auto w-auto"
+            width={134}
+            height={32}
+            loading="lazy"
+            decoding="async"
+          />
+          <img
+            src={logoS}
+            alt="Logo de Shells"
+            className="size-auto w-auto"
+            width={126}
+            height={32}
+            loading="lazy"
+            decoding="async"
+          />
+          <img
+            src={logoW}
+            alt="Logo de Waves"
+            className="size-auto w-auto"
+            width={110}
+            height={32}
+            loading="lazy"
+            decoding="async"
+          />
           <img
             src={logoA}
             alt="Logo de ArtVenue"
             className="size-auto w-auto col-span-2 lg:col-span-1"
+            width={167}
+            height={32}
+            loading="lazy"
+            decoding="async"
           />
         </div>
       </div>

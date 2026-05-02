@@ -1,4 +1,4 @@
-import image from "../../../assets/image02.png";
+import image from "../../../assets/image02.webp";
 import ArrowLink from "../../../components/ui/ArrowLink";
 import Button from "../../../components/ui/Button";
 import { useMediaQuery } from "../../../utils/mediaQuery";
@@ -39,6 +39,10 @@ const Ressources = () => {
               src={image}
               alt="Illustration d'un navigateur"
               className="size-auto w-auto max-w-[80%]"
+              width={672}
+              height={530}
+              loading="lazy"
+              decoding="async"
             />
           </div>
 
@@ -57,6 +61,10 @@ const Ressources = () => {
           src={image}
           alt="Illustration d'un navigateur"
           className="size-auto w-auto hidden lg:block"
+          width={672}
+          height={530}
+          loading="lazy"
+          decoding="async"
         />
       </div>
     </section>

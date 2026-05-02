@@ -1,4 +1,4 @@
-import img from "../../assets/img.jpg";
+import img from "../../assets/img.webp";
 import { useNavigate } from "react-router";
 import { articles, getArticleSlug } from "../../data/articles";
 import { getCategoryColor } from "../../utils/categoryColors";
@@ -62,6 +62,10 @@ const Articles = () => {
                 className={`w-full object-cover ${
                   article.size === "large" ? "h-64 lg:h-96" : "h-48"
                 }`}
+                width={1344}
+                height={768}
+                loading="lazy"
+                decoding="async"
               />
 
               {/* Contenu pour articles small/medium */}

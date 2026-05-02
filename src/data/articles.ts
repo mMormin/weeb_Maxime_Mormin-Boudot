@@ -3,7 +3,6 @@ export interface Article {
   id: number;
   title: string;
   date: string;
-  image: string;
   summary: string;
   category: string;
   size?: "small" | "medium" | "large";
@@ -36,7 +35,6 @@ export const articles: Article[] = [
     title:
       "Les tendances du web en 2025 : Une révolution technologique à venir",
     date: "3 novembre 2025",
-    image: "/assets/img.jpg",
     summary:
       "Découvrez les technologies qui façonneront l'avenir du développement web cette année. Avec l'avènement de l'IA, des frameworks plus performants et des standards web évolutifs, les développeurs doivent s'adapter à un écosystème en constante mutation. Cet article explore en détail les innovations clés, telles que les API modernes, les outils de collaboration et les pratiques de développement durable, pour vous aider à rester à la pointe de la technologie.",
     category: "Technologie",
@@ -57,7 +55,6 @@ export const articles: Article[] = [
     title:
       "React 19 : Nouveautés et améliorations majeures pour les développeurs",
     date: "2 novembre 2025",
-    image: "/assets/img.jpg",
     summary:
       "Un aperçu des nouvelles fonctionnalités de React 19 et leur impact sur les applications modernes.",
     category: "Développement",
@@ -75,7 +72,6 @@ export const articles: Article[] = [
     title:
       "L'importance de l'accessibilité web : Clés pour une inclusion numérique",
     date: "1 novembre 2025",
-    image: "/assets/img.jpg",
     summary:
       "Pourquoi l'accessibilité est essentielle et comment l'intégrer dans vos projets web.",
     category: "Accessibilité",
@@ -86,7 +82,6 @@ export const articles: Article[] = [
     title:
       "Optimisation des performances avec Vite : Accélérer vos applications web",
     date: "31 octobre 2025",
-    image: "/assets/img.jpg",
     summary:
       "Comment tirer parti de Vite pour des applications web ultra-rapides.",
     category: "Performance",
@@ -97,7 +92,6 @@ export const articles: Article[] = [
     title:
       "Le futur du CSS avec les nouvelles spécifications : Innovations et adoption",
     date: "30 octobre 2025",
-    image: "/assets/img.jpg",
     summary:
       "Explorer les avancées récentes en CSS et leur adoption dans les navigateurs.",
     category: "CSS",
@@ -107,7 +101,6 @@ export const articles: Article[] = [
     id: 6,
     title: "Protéger vos applications contre les menaces modernes",
     date: "29 octobre 2025",
-    image: "/assets/img.jpg",
     summary:
       "Les meilleures pratiques pour sécuriser vos sites web contre les menaces courantes.",
     category: "Sécurité",
@@ -117,7 +110,6 @@ export const articles: Article[] = [
     id: 7,
     title: "TypeScript 5.0 : Les nouveautés qui changent tout",
     date: "28 octobre 2025",
-    image: "/assets/img.jpg",
     summary:
       "Découvrez les améliorations majeures de TypeScript 5.0 et comment elles peuvent améliorer votre code.",
     category: "Développement",
@@ -127,7 +119,6 @@ export const articles: Article[] = [
     id: 8,
     title: "Les tendances en UI/UX Design ne cessent d'évoluer !",
     date: "27 octobre 2025",
-    image: "/assets/img.jpg",
     summary:
       "Les tendances en design d'interface et d'expérience utilisateur qui marquent l'année 2025.",
     category: "Design",
@@ -137,7 +128,6 @@ export const articles: Article[] = [
     id: 9,
     title: "Node.js : Meilleures pratiques pour le backend",
     date: "26 octobre 2025",
-    image: "/assets/img.jpg",
     summary:
       "Guide complet des meilleures pratiques pour développer des applications backend robustes avec Node.js.",
     category: "Développement",
@@ -147,7 +137,6 @@ export const articles: Article[] = [
     id: 10,
     title: "Web3 et Blockchain : L'avenir du web décentralisé",
     date: "25 octobre 2025",
-    image: "/assets/img.jpg",
     summary:
       "Comprendre les concepts du Web3 et comment la blockchain transforme Internet.",
     category: "Technologie",
@@ -157,7 +146,6 @@ export const articles: Article[] = [
     id: 11,
     title: "Architecture Microservices : Guide pratique",
     date: "24 octobre 2025",
-    image: "/assets/img.jpg",
     summary:
       "Comment concevoir et implémenter une architecture microservices efficace pour vos applications.",
     category: "Architecture",
@@ -167,7 +155,6 @@ export const articles: Article[] = [
     id: 12,
     title: "Tests automatisés : Stratégies et outils",
     date: "23 octobre 2025",
-    image: "/assets/img.jpg",
     summary:
       "Les meilleures stratégies et outils pour automatiser vos tests et garantir la qualité du code.",
     category: "Testing",

@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router";
-import img from "../../assets/img.jpg";
+import img from "../../assets/img.webp";
 import { articles, getArticleSlug } from "../../data/articles";
 import { getCategoryColor } from "../../utils/categoryColors";
 
@@ -85,6 +85,10 @@ const Article = () => {
             src={img}
             alt={article.title}
             className="w-full h-auto rounded-lg object-cover"
+            width={1344}
+            height={768}
+            fetchPriority="high"
+            decoding="async"
           />
           <figcaption className="text-sm text-gray-400 mt-3 text-center italic">
             Illustration de l'article

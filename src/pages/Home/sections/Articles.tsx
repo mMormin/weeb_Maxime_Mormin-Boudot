@@ -15,8 +15,13 @@ const Articles = () => {
         <div className="px-10 xl:px-0 flex justify-center">
           <img
             src={shapes}
-            alt="Formes décoratives"
+            alt=""
+            aria-hidden="true"
             className="size-auto max-w-[50%] xl:max-w-full xl:w-[416px]"
+            width={416}
+            height={416}
+            loading="lazy"
+            decoding="async"
           />
         </div>
 

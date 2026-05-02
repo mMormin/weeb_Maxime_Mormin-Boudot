@@ -1,5 +1,5 @@
 import Button from "../../../components/ui/Button";
-import image from "../../../assets/image.png";
+import image from "../../../assets/image.webp";
 
 // Section héro avec titre principal et CTA
 const Intro = () => {
@@ -40,6 +40,10 @@ const Intro = () => {
           src={image}
           alt="Illustration d'un navigateur"
           className="size-auto max-w-[1100px] w-full"
+          width={1176}
+          height={780}
+          fetchPriority="high"
+          decoding="async"
         />
       </div>
     </section>

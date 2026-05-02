@@ -16,7 +16,7 @@ type Metas = {
 export const routeMetas: Record<string, Metas> = Object.fromEntries(
   seoDatas.map(({ path, title, description }) => {
     const fullUrl = `${BASE_URL}${path}`;
-    const ogImage = `${BASE_URL}/cover.png`;
+    const ogImage = `${BASE_URL}/cover.webp`;
 
     // Balises SEO par défaut (OG + Twitter)
     const defaultChildren = (
