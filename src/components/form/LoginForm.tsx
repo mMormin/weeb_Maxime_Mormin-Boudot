@@ -5,6 +5,7 @@ import { getInputClass } from "../../utils/inputClasses";
 import { Link } from "react-router";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { api, API_ENDPOINTS } from "../../config/api";
+import { setTokens } from "../../utils/auth";
 import { useState } from "react";
 
 // Formulaire de connexion utilisateur
@@ -28,17 +29,20 @@ const LoginForm = () => {
         .required("Saisissez votre adresse email."),
       password: Yup.string().required("Saisissez votre mot de passe."),
     }),
-    // Envoi des identifiants à l'API
+    // Envoi des identifiants à l'API et stockage des tokens JWT
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitStatus({ type: null, message: "" });
 
       try {
-        await api.post(API_ENDPOINTS.login, values);
+        const response = await api.post<{ access: string; refresh: string }>(
+          API_ENDPOINTS.login,
+          values
+        );
+        setTokens(response.data.access, response.data.refresh);
         setSubmitStatus({
           type: "success",
           message: "Connexion réussie !",
         });
-        // TODO: Redirection vers dashboard après connexion
       } catch {
         setSubmitStatus({
           type: "error",
