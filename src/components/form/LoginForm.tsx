@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Button from "../ui/Button";
 import { getInputClass } from "../../utils/inputClasses";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { api, API_ENDPOINTS } from "../../config/api";
 import { setTokens } from "../../utils/auth";
@@ -10,11 +10,10 @@ import { useState } from "react";
 
 // Formulaire de connexion utilisateur
 const LoginForm = () => {
-  // État pour gérer le retour utilisateur après soumission
-  const [submitStatus, setSubmitStatus] = useState<{
-    type: "success" | "error" | null;
-    message: string;
-  }>({ type: null, message: "" });
+  const navigate = useNavigate();
+
+  // Message d'erreur inline (vide = aucune erreur)
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Configuration Formik avec valeurs initiales et validation
   const formik = useFormik({
@@ -31,7 +30,7 @@ const LoginForm = () => {
     }),
     // Envoi des identifiants à l'API et stockage des tokens JWT
     onSubmit: async (values, { setSubmitting }) => {
-      setSubmitStatus({ type: null, message: "" });
+      setErrorMessage("");
 
       try {
         const response = await api.post<{ access: string; refresh: string }>(
@@ -39,15 +38,10 @@ const LoginForm = () => {
           values
         );
         setTokens(response.data.access, response.data.refresh);
-        setSubmitStatus({
-          type: "success",
-          message: "Connexion réussie !",
-        });
+        // La redirection EST le signal de succès — pas de message inline.
+        navigate("/articles");
       } catch {
-        setSubmitStatus({
-          type: "error",
-          message: "Une erreur est survenue",
-        });
+        setErrorMessage("Une erreur est survenue");
       } finally {
         setSubmitting(false);
       }
@@ -108,16 +102,10 @@ const LoginForm = () => {
         </div>
       </div>
 
-      {/* Notification succès/erreur après soumission */}
-      {submitStatus.type && (
-        <div
-          className={`text-center p-4 rounded-lg mb-4 ${
-            submitStatus.type === "success"
-              ? "bg-green-500/20 text-green-400"
-              : "bg-red-500/20 text-red-400"
-          }`}
-        >
-          {submitStatus.message}
+      {/* Notification d'erreur après soumission */}
+      {errorMessage && (
+        <div className="text-center p-4 rounded-lg mb-4 bg-red-500/20 text-red-400">
+          {errorMessage}
         </div>
       )}
 

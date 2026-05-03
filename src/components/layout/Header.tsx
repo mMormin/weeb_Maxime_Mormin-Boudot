@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Button from "../ui/Button";
 import { Menu, X } from "lucide-react";
 import { useMediaQuery } from "../../utils/mediaQuery";
+import { clearTokens, useAuth } from "../../utils/auth";
 
 // Header responsive avec navigation desktop et mobile
 const Header = () => {
@@ -13,6 +14,16 @@ const Header = () => {
 
   // Détection du breakpoint mobile (≤1024px)
   const isMobile = useMediaQuery("(max-width: 1024px)");
+
+  // État d'authentification (réactif aux changements de tokens)
+  const authenticated = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    clearTokens();
+    setMenuOpen(false);
+    navigate("/");
+  };
 
   // Écoute du scroll pour déclencher le style condensé
   useEffect(() => {
@@ -81,20 +92,32 @@ const Header = () => {
               Nous contacter
             </Link>
 
-            <Link
-              to="/login"
-              onClick={() => setMenuOpen(false)}
-              className="hover:underline"
-            >
-              Se connecter
-            </Link>
+            {authenticated ? (
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="hover:underline"
+              >
+                Déconnexion
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                onClick={() => setMenuOpen(false)}
+                className="hover:underline"
+              >
+                Se connecter
+              </Link>
+            )}
 
-            <Button
-              to="/signup"
-              primary
-              text="Rejoindre maintenant"
-              onClick={() => setMenuOpen(false)}
-            />
+            {!authenticated && (
+              <Button
+                to="/signup"
+                primary
+                text="Rejoindre maintenant"
+                onClick={() => setMenuOpen(false)}
+              />
+            )}
           </div>
         )}
       </>
@@ -137,17 +160,29 @@ const Header = () => {
 
         {/* Actions utilisateur */}
         <div className="flex space-x-6 items-center justify-center">
-          <Link to="/login" className="text-white hover:underline">
-            Se connecter
-          </Link>
+          {authenticated ? (
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="text-white hover:underline"
+            >
+              Déconnexion
+            </button>
+          ) : (
+            <>
+              <Link to="/login" className="text-white hover:underline">
+                Se connecter
+              </Link>
 
-          <Button
-            to="/signup"
-            primary
-            text="Rejoindre maintenant"
-            compact
-            reverseAnimation
-          />
+              <Button
+                to="/signup"
+                primary
+                text="Rejoindre maintenant"
+                compact
+                reverseAnimation
+              />
+            </>
+          )}
         </div>
       </nav>
     </header>

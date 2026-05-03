@@ -1,5 +1,10 @@
-import axios from "axios";
-import { getAccessToken } from "../utils/auth";
+import axios, { type InternalAxiosRequestConfig } from "axios";
+import {
+  clearTokens,
+  getAccessToken,
+  getRefreshToken,
+  setTokens,
+} from "../utils/auth";
 
 // URL de base de l'API selon l'environnement
 export const API_BASE_URL =
@@ -32,3 +37,56 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+// Refresh partagé : si plusieurs requêtes tombent en 401 simultanément,
+// un seul appel à /api/token/refresh/ part et les autres attendent son résultat.
+let refreshPromise: Promise<string> | null = null;
+
+// Intercepteur : sur 401, tente un refresh puis rejoue la requête initiale.
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const original = error.config as
+      | (InternalAxiosRequestConfig & { _retry?: boolean })
+      | undefined;
+
+    if (!original || error.response?.status !== 401 || original._retry) {
+      return Promise.reject(error);
+    }
+
+    const refresh = getRefreshToken();
+    if (!refresh) {
+      return Promise.reject(error);
+    }
+
+    original._retry = true;
+
+    try {
+      refreshPromise ??= axios
+        .post<{ access: string; refresh?: string }>(
+          `${API_BASE_URL}${API_ENDPOINTS.refresh}`,
+          { refresh },
+        )
+        .then((res) => {
+          setTokens(res.data.access, res.data.refresh ?? refresh);
+          return res.data.access;
+        })
+        .finally(() => {
+          refreshPromise = null;
+        });
+
+      await refreshPromise;
+      // Le replay passe par le request interceptor qui réinjecte le nouveau
+      // token via getAccessToken() — pas besoin de réécrire le header ici.
+      return api(original);
+    } catch (refreshError) {
+      clearTokens();
+      // Hard reload : le client API n'a pas accès au router. Acceptable car
+      // le refresh expiré invalide aussi tout l'état en mémoire (cache, store).
+      if (window.location.pathname !== "/login") {
+        window.location.href = "/login";
+      }
+      return Promise.reject(refreshError);
+    }
+  },
+);

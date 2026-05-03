@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "react-router";
+import { MemoryRouter, Route, Routes } from "react-router";
 import LoginForm from "./LoginForm";
 import { api, API_ENDPOINTS } from "../../config/api";
 
@@ -20,6 +20,7 @@ const renderLoginForm = () =>
 describe("LoginForm", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    localStorage.clear();
   });
 
   it("affiche une erreur sur chaque champ requis lors d'une soumission vide", async () => {
@@ -70,10 +71,20 @@ describe("LoginForm", () => {
     });
   });
 
-  it("affiche une confirmation après une connexion réussie", async () => {
+  it("redirige vers /articles après une connexion réussie", async () => {
     const user = userEvent.setup();
-    vi.mocked(api.post).mockResolvedValueOnce({ data: { access: "token" } });
-    renderLoginForm();
+    vi.mocked(api.post).mockResolvedValueOnce({
+      data: { access: "tok", refresh: "ref" },
+    });
+
+    render(
+      <MemoryRouter initialEntries={["/login"]}>
+        <Routes>
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/articles" element={<div>Page Articles</div>} />
+        </Routes>
+      </MemoryRouter>
+    );
 
     await user.type(
       screen.getByPlaceholderText("Email"),
@@ -82,9 +93,8 @@ describe("LoginForm", () => {
     await user.type(screen.getByPlaceholderText("Mot de passe"), "secret123");
     await user.click(screen.getByRole("button", { name: /se connecter/i }));
 
-    expect(
-      await screen.findByText(/connexion réussie/i)
-    ).toBeInTheDocument();
+    expect(await screen.findByText("Page Articles")).toBeInTheDocument();
+    expect(localStorage.getItem("weeb_access_token")).toBe("tok");
   });
 
   it("affiche un message d'erreur si l'API rejette la requête", async () => {
