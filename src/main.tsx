@@ -15,6 +15,7 @@ const Contact = lazy(() => import("./pages/Contact/index"));
 const Login = lazy(() => import("./pages/Login/index"));
 const Articles = lazy(() => import("./pages/Articles"));
 const Article = lazy(() => import("./pages/Article"));
+const CreateArticle = lazy(() => import("./pages/CreateArticle"));
 
 // Point d'entrée de l'application React
 createRoot(document.getElementById("root")!).render(
@@ -31,6 +32,7 @@ createRoot(document.getElementById("root")!).render(
                 <Route path="contact" element={<Contact />} />
                 <Route path="login" element={<Login />} />
                 <Route path="articles" element={<Articles />} />
+                <Route path="articles/new" element={<CreateArticle />} />
                 <Route path="articles/:slug" element={<Article />} />
               </Route>
             </Routes>

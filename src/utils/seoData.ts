@@ -26,6 +26,11 @@ export const seoDatas: Array<{
     description:
       "Découvrez nos articles sur le développement web, les technologies et les meilleures pratiques.",
   },
+  {
+    path: "/articles/new",
+    title: "Nouvel article - Weeb",
+    description: "Rédigez et publiez un nouvel article sur Weeb.",
+  },
 ];
 
 // URL de base selon l'environnement (dev/prod)

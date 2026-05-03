@@ -46,9 +46,9 @@ export const routeMetas: Record<string, Metas> = Object.fromEntries(
         description,
         ogTitle: title,
         ogDescription: description,
-        // Noindex pour la page contact (pas d'indexation)
+        // Noindex pour les pages contact et création d'article (auth-only)
         children:
-          path === "/contact" ? (
+          path === "/contact" || path === "/articles/new" ? (
             <>
               <meta name="robots" content="noindex" />
               {defaultChildren}
