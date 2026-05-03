@@ -2,7 +2,10 @@
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "target": "ES2023",
-    "lib": ["ES2023"],
+    /* WebWorker lib gives us `fetch`/`Response`/`Headers` types without
+       polluting Node-targeted code with browser-only globals (window,
+       document, localStorage). Avoids the need for @types/node. */
+    "lib": ["ES2023", "WebWorker"],
     "module": "ESNext",
     "skipLibCheck": true,
 

@@ -1,7 +1,10 @@
 import img from "../../assets/img.webp";
+import { use } from "react";
 import { useNavigate } from "react-router";
-import { articles, getArticleSlug } from "../../data/articles";
+import { getPostsPromise } from "../../data/articles";
 import { getCategoryColor } from "../../utils/categoryColors";
+import { useAuth } from "../../utils/auth";
+import Button from "../../components/ui/Button";
 
 // Retourne les classes CSS de grille selon la taille de l'article
 const getArticleSpan = (size?: string) => {
@@ -19,20 +22,35 @@ const getArticleSpan = (size?: string) => {
 // Page listant tous les articles en grille
 const Articles = () => {
   const navigate = useNavigate();
+  const authenticated = useAuth();
+  // Suspends until the API returns; <Suspense> in main.tsx renders the fallback.
+  const articles = use(getPostsPromise());
 
   return (
     <section className="text-white py-10 pt-30 px-10 xl:px-0">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl lg:text-5xl font-extrabold tracking-wide leading-16 lg:leading-20 mb-5">
-          Articles
-        </h1>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
+          <h1 className="text-4xl lg:text-5xl font-extrabold tracking-wide leading-16 lg:leading-20">
+            Articles
+          </h1>
+
+          {authenticated && (
+            <Button
+              to="/articles/new"
+              text="Créer un article"
+              primary
+              compact
+              reverseAnimation
+            />
+          )}
+        </div>
 
         {/* Grille d'articles responsive */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 px-2">
           {articles.map((article) => (
             <div
               key={article.id}
-              onClick={() => navigate(`/articles/${getArticleSlug(article)}`)}
+              onClick={() => navigate(`/articles/${article.slug}`)}
               className={`bg-gray-800/50 rounded-lg overflow-hidden shadow hover:shadow-xl min-h-56 transition-all duration-300 flex flex-col cursor-pointer group hover:scale-102 ${getArticleSpan(
                 article.size
               )} ${article.size === "large" ? "p-6" : ""}`}

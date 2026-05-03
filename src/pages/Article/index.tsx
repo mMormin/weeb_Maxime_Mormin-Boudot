@@ -1,6 +1,7 @@
+import { use } from "react";
 import { useParams, useNavigate } from "react-router";
 import img from "../../assets/img.webp";
-import { articles, getArticleSlug } from "../../data/articles";
+import { getPostPromise } from "../../data/articles";
 import { getCategoryColor } from "../../utils/categoryColors";
 
 // Page de détail d'un article
@@ -9,8 +10,8 @@ const Article = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
 
-  // Recherche de l'article correspondant au slug
-  const article = articles.find((a) => getArticleSlug(a) === slug);
+  // Suspends on first navigation to a slug, then resolves from cache.
+  const article = use(getPostPromise(slug ?? ""));
 
   // Page 404 si article non trouvé
   if (!article) {
