@@ -20,7 +20,7 @@ const Login = () => {
 
           {/* CTA création de compte (visible desktop) */}
           <div className="flex-grow md:flex justify-center items-center hidden">
-            <Button type="submit" text="Créer un compte" />
+            <Button to="/signup" text="Créer un compte" />
           </div>
         </div>
       </div>

@@ -21,6 +21,11 @@ export const seoDatas: Array<{
     description: "Connectez-vous à votre compte Weeb en un clin d'oeil.",
   },
   {
+    path: "/signup",
+    title: "Inscription - Weeb",
+    description: "Créez votre compte Weeb gratuitement en quelques secondes.",
+  },
+  {
     path: "/articles",
     title: "Articles - Weeb",
     description:

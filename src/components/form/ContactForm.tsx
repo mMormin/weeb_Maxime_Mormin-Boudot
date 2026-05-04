@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Button from "../ui/Button";
-import { RiErrorWarningFill } from "react-icons/ri";
+import FieldError from "./FieldError";
 import { getInputClass } from "../../utils/inputClasses";
 import { api, API_ENDPOINTS } from "../../config/api";
 import { useState } from "react";
@@ -63,7 +63,7 @@ const ContactForm = () => {
   return (
     <form
       onSubmit={formik.handleSubmit}
-      className="bg-[#21223F] px-12 py-6 rounded-2xl text-white space-y-8 md:space-y-4 w-full pt-10 md:pt-0"
+      className="bg-[#21223F] px-12 pt-10 pb-6 md:px-8 md:py-8 rounded-2xl text-white space-y-8 md:space-y-4 w-full md:max-w-2xl"
     >
       {/* Ligne 1 : Nom et Prénom */}
       <div className="grid grid-cols-2 gap-10">
@@ -77,18 +77,15 @@ const ContactForm = () => {
             onBlur={formik.handleBlur}
             value={formik.values.lastName}
             className={getInputClass(
-              !!(formik.touched.lastName && formik.errors.lastName)
+              !!(formik.touched.lastName && formik.errors.lastName),
+              { large: true }
             )}
           />
-          {/* Affichage erreur nom */}
-          <div className="text-left text-red-400 text-sm h-5 mt-1">
-            {formik.touched.lastName && formik.errors.lastName && (
-              <span className="flex gap-2">
-                <RiErrorWarningFill className="mt-[2px]" />
-                <p>{formik.errors.lastName}</p>
-              </span>
-            )}
-          </div>
+          <FieldError
+            message={
+              formik.touched.lastName ? formik.errors.lastName : undefined
+            }
+          />
         </div>
 
         <div>
@@ -101,18 +98,13 @@ const ContactForm = () => {
             onBlur={formik.handleBlur}
             value={formik.values.name}
             className={getInputClass(
-              !!(formik.touched.name && formik.errors.name)
+              !!(formik.touched.name && formik.errors.name),
+              { large: true }
             )}
           />
-          {/* Affichage erreur prénom */}
-          <div className="text-left text-red-400 text-sm h-5 mt-1">
-            {formik.touched.name && formik.errors.name && (
-              <span className="flex gap-2">
-                <RiErrorWarningFill className="mt-[2px]" />
-                <p>{formik.errors.name}</p>
-              </span>
-            )}
-          </div>
+          <FieldError
+            message={formik.touched.name ? formik.errors.name : undefined}
+          />
         </div>
       </div>
 
@@ -128,18 +120,13 @@ const ContactForm = () => {
             onBlur={formik.handleBlur}
             value={formik.values.phone}
             className={getInputClass(
-              !!(formik.touched.phone && formik.errors.phone)
+              !!(formik.touched.phone && formik.errors.phone),
+              { large: true }
             )}
           />
-          {/* Affichage erreur téléphone */}
-          <div className="text-left text-red-400 text-sm h-5 mt-1">
-            {formik.touched.phone && formik.errors.phone && (
-              <span className="flex gap-2">
-                <RiErrorWarningFill className="mt-[2px]" />
-                <p>{formik.errors.phone}</p>
-              </span>
-            )}
-          </div>
+          <FieldError
+            message={formik.touched.phone ? formik.errors.phone : undefined}
+          />
         </div>
 
         <div>
@@ -152,18 +139,13 @@ const ContactForm = () => {
             onBlur={formik.handleBlur}
             value={formik.values.email}
             className={getInputClass(
-              !!(formik.touched.email && formik.errors.email)
+              !!(formik.touched.email && formik.errors.email),
+              { large: true }
             )}
           />
-          {/* Affichage erreur email */}
-          <div className="text-left text-red-400 text-sm h-5 mt-1">
-            {formik.touched.email && formik.errors.email && (
-              <span className="flex gap-2">
-                <RiErrorWarningFill className="mt-[2px]" />
-                <p>{formik.errors.email}</p>
-              </span>
-            )}
-          </div>
+          <FieldError
+            message={formik.touched.email ? formik.errors.email : undefined}
+          />
         </div>
       </div>
 
@@ -178,23 +160,19 @@ const ContactForm = () => {
           value={formik.values.message}
           rows={4}
           className={getInputClass(
-            !!(formik.touched.message && formik.errors.message)
+            !!(formik.touched.message && formik.errors.message),
+            { large: true }
           )}
         />
-        {/* Affichage erreur message */}
-        <div className="text-left text-red-400 text-sm h-5 mt-1">
-          {formik.touched.message && formik.errors.message && (
-            <span className="flex gap-2">
-              <RiErrorWarningFill className="mt-[2px]" />
-              <p>{formik.errors.message}</p>
-            </span>
-          )}
-        </div>
+        <FieldError
+          message={formik.touched.message ? formik.errors.message : undefined}
+        />
       </div>
 
       {/* Notification succès/erreur après soumission */}
       {submitStatus.type && (
         <div
+          role={submitStatus.type === "error" ? "alert" : "status"}
           className={`text-center p-4 rounded-lg ${
             submitStatus.type === "success"
               ? "bg-green-500/20 text-green-400"

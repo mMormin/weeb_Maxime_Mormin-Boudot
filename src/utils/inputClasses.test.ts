@@ -22,4 +22,9 @@ describe("getInputClass", () => {
     expect(className).toContain("placeholder:text-secondary");
     expect(className).not.toContain("border-b-red-400");
   });
+
+  it("ajoute la taille md:text-lg quand large=true", () => {
+    expect(getInputClass(false, { large: true })).toContain("md:text-lg");
+    expect(getInputClass(false)).not.toContain("md:text-lg");
+  });
 });

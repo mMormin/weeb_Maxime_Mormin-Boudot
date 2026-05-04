@@ -1,5 +1,6 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 import Button from "../ui/Button";
 import FieldError from "./FieldError";
 import { getInputClass } from "../../utils/inputClasses";
@@ -8,8 +9,8 @@ import { api, API_ENDPOINTS } from "../../config/api";
 import { setTokens } from "../../utils/auth";
 import { useState } from "react";
 
-// Formulaire de connexion utilisateur
-const LoginForm = () => {
+// Formulaire d'inscription utilisateur
+const SignupForm = () => {
   const navigate = useNavigate();
 
   // Message d'erreur inline (vide = aucune erreur)
@@ -20,28 +21,63 @@ const LoginForm = () => {
     initialValues: {
       email: "",
       password: "",
+      passwordConfirm: "",
     },
     // Schéma de validation des champs
     validationSchema: Yup.object({
       email: Yup.string()
         .email("Adresse email non valide.")
         .required("Saisissez votre adresse email."),
-      password: Yup.string().required("Saisissez votre mot de passe."),
+      password: Yup.string()
+        .min(8, "Le mot de passe doit contenir au moins 8 caractères.")
+        .required("Saisissez un mot de passe."),
+      passwordConfirm: Yup.string()
+        .oneOf(
+          [Yup.ref("password")],
+          "Les mots de passe ne correspondent pas."
+        )
+        .required("Confirmez votre mot de passe."),
     }),
-    // Envoi des identifiants à l'API et stockage des tokens JWT
-    onSubmit: async (values, { setSubmitting }) => {
+    // Création du compte puis connexion automatique
+    onSubmit: async (values, { setSubmitting, setErrors }) => {
       setErrorMessage("");
 
       try {
+        await api.post(API_ENDPOINTS.register, {
+          email: values.email,
+          password: values.password,
+        });
+      } catch (error) {
+        // DRF renvoie { field: ["message", ...] } sur 400 — on remonte l'erreur
+        // sur le champ concerné quand c'est possible.
+        if (axios.isAxiosError(error) && error.response?.status === 400) {
+          const data = error.response.data as Record<string, string[]>;
+          const fieldErrors: Record<string, string> = {};
+          if (data.email?.[0]) fieldErrors.email = data.email[0];
+          if (data.password?.[0]) fieldErrors.password = data.password[0];
+          if (Object.keys(fieldErrors).length > 0) {
+            setErrors(fieldErrors);
+          } else {
+            setErrorMessage("Inscription impossible.");
+          }
+        } else {
+          setErrorMessage("Une erreur est survenue");
+        }
+        setSubmitting(false);
+        return;
+      }
+
+      // Connexion automatique : si elle échoue, on bascule vers /login
+      // plutôt que de laisser l'utilisateur sur un formulaire déjà soumis.
+      try {
         const response = await api.post<{ access: string; refresh: string }>(
           API_ENDPOINTS.login,
-          values
+          { email: values.email, password: values.password }
         );
         setTokens(response.data.access, response.data.refresh);
-        // La redirection EST le signal de succès — pas de message inline.
         navigate("/articles");
       } catch {
-        setErrorMessage("Une erreur est survenue");
+        navigate("/login");
       } finally {
         setSubmitting(false);
       }
@@ -90,6 +126,31 @@ const LoginForm = () => {
             }
           />
         </div>
+
+        {/* Champ confirmation mot de passe */}
+        <div>
+          <label className="sr-only">Confirmation du mot de passe</label>
+          <input
+            type="password"
+            name="passwordConfirm"
+            placeholder="Confirmer le mot de passe"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.passwordConfirm}
+            className={getInputClass(
+              !!(
+                formik.touched.passwordConfirm && formik.errors.passwordConfirm
+              )
+            )}
+          />
+          <FieldError
+            message={
+              formik.touched.passwordConfirm
+                ? formik.errors.passwordConfirm
+                : undefined
+            }
+          />
+        </div>
       </div>
 
       {/* Notification d'erreur après soumission */}
@@ -102,32 +163,25 @@ const LoginForm = () => {
         </div>
       )}
 
-      {/* Bouton de connexion */}
+      {/* Bouton d'inscription */}
       <div className="text-center mt-10">
         <Button
           type="submit"
-          text={formik.isSubmitting ? "Connexion..." : "Se Connecter"}
+          text={formik.isSubmitting ? "Création..." : "Créer mon compte"}
           primary
           reverseAnimation
         />
       </div>
 
-      {/* Liens secondaires */}
+      {/* Lien vers la connexion */}
       <div className="flex flex-col mt-10 md:my-10 tracking-wider space-y-6 justify-center items-center">
-        <Link
-          to="#"
-          className="font-bold hover:underline underline-offset-2 cursor-pointer md:text-sm"
-        >
-          Mot de passe oublié ?
-        </Link>
-
-        <p className="md:text-xs md:w-[50%]">
-          Vous n'avez pas de compte ? Vous pouvez en{" "}
+        <p className="md:text-xs md:w-[60%]">
+          Vous avez déjà un compte ?{" "}
           <Link
-            to="/signup"
+            to="/login"
             className="underline underline-offset-4 cursor-pointer hover:no-underline hover:text-secondary"
           >
-            créer un gratuitement
+            Connectez-vous
           </Link>
           .
         </p>
@@ -136,4 +190,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default SignupForm;

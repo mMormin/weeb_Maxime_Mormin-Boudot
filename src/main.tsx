@@ -13,6 +13,7 @@ import "./index.css";
 // Routes secondaires chargées à la demande pour réduire le bundle initial
 const Contact = lazy(() => import("./pages/Contact/index"));
 const Login = lazy(() => import("./pages/Login/index"));
+const Signup = lazy(() => import("./pages/Signup/index"));
 const Articles = lazy(() => import("./pages/Articles"));
 const Article = lazy(() => import("./pages/Article"));
 const CreateArticle = lazy(() => import("./pages/CreateArticle"));
@@ -31,6 +32,7 @@ createRoot(document.getElementById("root")!).render(
                 <Route index element={<Home />} />
                 <Route path="contact" element={<Contact />} />
                 <Route path="login" element={<Login />} />
+                <Route path="signup" element={<Signup />} />
                 <Route path="articles" element={<Articles />} />
                 <Route path="articles/new" element={<CreateArticle />} />
                 <Route path="articles/:slug" element={<Article />} />
