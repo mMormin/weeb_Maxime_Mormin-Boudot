@@ -19,5 +19,30 @@ export default tseslint.config([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      // Autorise l'export de constantes à côté des composants — le préréglage
+      // `vite` du plugin est trop strict pour des fichiers de données SEO.
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
+    },
+  },
+  {
+    // Point d'entrée : jamais hot-reloadé, les routes lazy ne sont pas
+    // exportées par design.
+    files: ['src/main.tsx'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
+  {
+    // Métadonnées SEO : que des constantes dérivées (Record), pas de
+    // composants. Le plugin déclenche la règle car le fichier contient du
+    // JSX — non pertinent ici.
+    files: ['src/utils/routeMetas.tsx'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
   },
 ])
