@@ -19,7 +19,7 @@ pnpm preview      # Preview the production build
 
 ## Conventions (must follow)
 
-- **Language**: All code is in ENGLISH — variables, functions, types, file names, commit messages. UI strings (visible to the user) are in FRENCH (the site is French-speaking). Validation messages, button labels, error copy → French. Identifiers, comments, JSDoc → English.
+- **Language**: Identifiers (variables, functions, types, file names) and commit messages are in ENGLISH. UI strings visible to the user are in FRENCH (the site is French-speaking) — validation messages, button labels, error copy. **Comments and JSDoc are in FRENCH**, written in a natural human tone (no robotic phrasing, no "TODO" English templates). When editing a file, match the language already in use; when adding new comments, default to French.
 - **No `useEffect`**: Never use `useEffect` unless there is absolutely no alternative. Prefer derived state, event handlers, `useMemo`, refs in event callbacks. If you reach for it, justify why no alternative works.
 - **HTTP via the central client**: All API calls go through `api` and `API_ENDPOINTS` from `src/config/api.ts`. Never call `axios.create` elsewhere or hardcode URLs in components. When the backend exposes a new route, add it to `API_ENDPOINTS` first.
 - **Forms**: Formik + Yup. Pattern: see `src/components/form/LoginForm.tsx`. Yup validation messages in French (user-facing). Show field errors inline directly below the input — never as toasts or alerts.
