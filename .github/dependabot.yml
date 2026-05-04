@@ -10,14 +10,15 @@ updates:
       - "dependencies"
       - "frontend"
     groups:
-      # Tout regroupé dans une PR hebdo unique (majeures incluses) pour
-      # minimiser le bruit. Au moindre doute sur une majeure, fermer la PR
-      # et la laisser remonter isolément la semaine suivante via `ignore`.
-      all-deps:
+      # Minor + patch regroupés en une PR hebdo unique : quasi toujours
+      # sans risque, à merger en bloc le lundi.
+      safe-deps:
         update-types:
-          - "major"
           - "minor"
           - "patch"
+    # Les majeures ne sont volontairement dans aucun groupe : Dependabot
+    # ouvrira une PR par paquet majeur, ce qui permet de traiter les
+    # breaking changes un à un (eslint 10, vite 8, vitest 4, etc.).
 
   - package-ecosystem: "github-actions"
     directory: "/"
