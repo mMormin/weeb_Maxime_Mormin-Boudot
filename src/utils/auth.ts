@@ -7,7 +7,11 @@ import { useSyncExternalStore } from "react";
 
 const ACCESS_KEY = "weeb_access_token";
 const REFRESH_KEY = "weeb_refresh_token";
-const AUTH_EVENT = "weeb-auth-change";
+
+// Émis sur chaque setTokens / clearTokens. Utilisé par `useAuth()` pour la
+// réactivité, et par les caches data-layer (cf. `invalidatePostCaches` dans
+// `data/articles.ts`) pour purger les données dépendantes de l'identité.
+export const AUTH_EVENT = "weeb-auth-change";
 
 export function setTokens(access: string, refresh: string) {
   localStorage.setItem(ACCESS_KEY, access);

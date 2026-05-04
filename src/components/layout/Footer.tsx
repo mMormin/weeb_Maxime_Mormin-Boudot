@@ -30,28 +30,28 @@ const footerLinks: {
   }[];
 } = {
   Product: [
-    { label: "Pricing", href: "/pricing" },
-    { label: "Overview", href: "/overview" },
-    { label: "Browse", href: "/browse" },
-    { label: "Accessibility", href: "/accessibility" },
-    { label: "Five", href: "/five" },
+    { label: "Pricing", href: "#" },
+    { label: "Overview", href: "#" },
+    { label: "Browse", href: "#" },
+    { label: "Accessibility", href: "#" },
+    { label: "Five", href: "#" },
   ],
   Solutions: [
-    { label: "Brainstorming", href: "/brainstorming" },
-    { label: "Ideation", href: "/ideation" },
-    { label: "Wireframing", href: "/wireframing" },
-    { label: "Research", href: "/research" },
+    { label: "Brainstorming", href: "#" },
+    { label: "Ideation", href: "#" },
+    { label: "Wireframing", href: "#" },
+    { label: "Research", href: "#" },
   ],
   Resources: [
-    { label: "Help Center", href: "/help-center" },
-    { label: "Blog", href: "/blog" },
-    { label: "Tutorials", href: "/tutorials" },
+    { label: "Help Center", href: "#" },
+    { label: "Blog", href: "#" },
+    { label: "Tutorials", href: "#" },
   ],
   Company: [
-    { label: "About", href: "/about" },
-    { label: "Press", href: "/press" },
-    { label: "Events", href: "/events" },
-    { label: "Careers", href: "/careers" },
+    { label: "About", href: "#" },
+    { label: "Press", href: "#" },
+    { label: "Events", href: "#" },
+    { label: "Careers", href: "#" },
   ],
 };
 

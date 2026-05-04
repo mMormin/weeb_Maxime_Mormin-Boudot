@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import Button from "../ui/Button";
-import { Menu, X } from "lucide-react";
+import { LogOut, Menu, X } from "lucide-react";
 import { useMediaQuery } from "../../utils/mediaQuery";
 import { clearTokens, useAuth } from "../../utils/auth";
+import { useUsername } from "../../data/users";
 
 // Header responsive avec navigation desktop et mobile
 const Header = () => {
@@ -17,6 +18,9 @@ const Header = () => {
 
   // État d'authentification (réactif aux changements de tokens)
   const authenticated = useAuth();
+  // Username courant (réactif). Vide tant que l'utilisateur n'a pas publié
+  // son premier article (la modal n'a pas encore été déclenchée).
+  const username = useUsername();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -76,12 +80,24 @@ const Header = () => {
             </button>
 
             {/* Liens de navigation */}
-            <Link
-              to="/about"
-              onClick={() => setMenuOpen(false)}
+            {/* Placeholder : route "A propos" pas encore implémentée. */}
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                setMenuOpen(false);
+              }}
               className="hover:underline"
             >
               A propos
+            </a>
+
+            <Link
+              to="/articles"
+              onClick={() => setMenuOpen(false)}
+              className="hover:underline"
+            >
+              Blog
             </Link>
 
             <Link
@@ -92,13 +108,17 @@ const Header = () => {
               Nous contacter
             </Link>
 
+            {authenticated && username && (
+              <span className="text-secondary font-semibold">{username}</span>
+            )}
+
             {authenticated ? (
               <button
                 type="button"
                 onClick={handleLogout}
                 className="hover:underline"
               >
-                Déconnexion
+                Se déconnecter
               </button>
             ) : (
               <Link
@@ -148,8 +168,17 @@ const Header = () => {
           </Link>
 
           <div className="flex space-x-6 mt-1 text-white">
-            <Link to="/about" className="hover:underline ">
+            {/* Placeholder : route "A propos" pas encore implémentée. */}
+            <a
+              href="#"
+              onClick={(e) => e.preventDefault()}
+              className="hover:underline "
+            >
               A propos
+            </a>
+
+            <Link to="/articles" className="hover:underline">
+              Blog
             </Link>
 
             <Link to="/contact" className="hover:underline">
@@ -160,13 +189,18 @@ const Header = () => {
 
         {/* Actions utilisateur */}
         <div className="flex space-x-6 items-center justify-center">
+          {authenticated && username && (
+            <span className="text-secondary font-semibold">{username}</span>
+          )}
+
           {authenticated ? (
             <button
               type="button"
               onClick={handleLogout}
-              className="text-white hover:underline"
+              className="flex items-center gap-2 text-white hover:text-purple-400 transition-colors cursor-pointer"
             >
-              Déconnexion
+              <LogOut className="size-5" />
+              Se déconnecter
             </button>
           ) : (
             <>

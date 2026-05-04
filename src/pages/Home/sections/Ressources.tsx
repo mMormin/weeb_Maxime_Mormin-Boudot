@@ -49,10 +49,10 @@ const Ressources = () => {
           {/* CTA : Bouton sur mobile, lien flèche sur desktop */}
           {isMobile ? (
             <div className="flex justify-center items-center mt-10">
-              <Button text="Explorer les ressources" to="/ressources" primary />
+              <Button text="Explorer les ressources" to="#" primary />
             </div>
           ) : (
-            <ArrowLink to="/ressources" text="Explorer les ressources" />
+            <ArrowLink to="#" text="Explorer les ressources" />
           )}
         </div>
 

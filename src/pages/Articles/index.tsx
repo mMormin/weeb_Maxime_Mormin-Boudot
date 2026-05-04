@@ -2,7 +2,7 @@ import img from "../../assets/img.webp";
 import { use } from "react";
 import { useNavigate } from "react-router";
 import { getPostsPromise } from "../../data/articles";
-import { getCategoryColor } from "../../utils/categoryColors";
+import { getCategoryColor } from "../../data/categories";
 import { useAuth } from "../../utils/auth";
 import Button from "../../components/ui/Button";
 
@@ -23,7 +23,7 @@ const getArticleSpan = (size?: string) => {
 const Articles = () => {
   const navigate = useNavigate();
   const authenticated = useAuth();
-  // Suspends until the API returns; <Suspense> in main.tsx renders the fallback.
+  // Suspend jusqu'à ce que l'API réponde ; le <Suspense> de main.tsx affiche le fallback.
   const articles = use(getPostsPromise());
 
   return (
@@ -66,7 +66,7 @@ const Articles = () => {
                 >
                   <span
                     className={`inline-block w-5 h-5 rounded border-black border-2 mr-4 ${getCategoryColor(
-                      article.category
+                      article.categoryKey
                     )}`}
                   />
                   {article.title}
@@ -100,7 +100,7 @@ const Articles = () => {
                       {/* Badge catégorie */}
                       <span
                         className={`inline-block w-4 h-4 rounded mr-2 pt-3 border-black border-2 ${getCategoryColor(
-                          article.category
+                          article.categoryKey
                         )}`}
                       ></span>
                       {article.title}

@@ -32,7 +32,7 @@ const Intro = () => {
           {/* Boutons d'action */}
           <div className="flex justify-center items-center gap-6">
             <Button primary text="Découvrir les articles" to="/articles" />
-            <Button text="S'abonner à la newsletter" to="/newsletter" />
+            <Button text="S'abonner à la newsletter" to="#" />
           </div>
         </div>
 

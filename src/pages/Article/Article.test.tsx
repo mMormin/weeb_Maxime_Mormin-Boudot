@@ -5,14 +5,15 @@ import { MemoryRouter, Route, Routes } from "react-router";
 import Article from "./index";
 import { getPostPromise } from "../../data/articles";
 
-// `getPostPromise` is a function so we can vary its return value per test.
+// `getPostPromise` est une fonction, ce qui permet de faire varier sa valeur
+// de retour selon le test.
 vi.mock("../../data/articles", () => ({
   getPostPromise: vi.fn(),
 }));
 
-// React 19's `use()` suspends on the first render and resumes after the
-// promise resolves in a microtask. Wrapping in `await act(...)` lets React
-// commit the resolved render before assertions run.
+// `use()` de React 19 suspend au premier render et reprend une fois la
+// promesse résolue dans une microtask. Le `await act(...)` laisse React
+// committer le render résolu avant que les assertions ne tournent.
 const renderArticleAt = async (slug: string) => {
   await act(async () => {
     render(
@@ -42,9 +43,12 @@ describe("Article page", () => {
         date: "1 mai 2026",
         summary: "Tour d'horizon des nouveautés",
         category: "Développement",
+        categoryKey: "developpement",
         author: "Anonyme",
+        isOwner: false,
         readTime: "4 min",
-        content: ["Premier paragraphe du corps."],
+        readTimeMinutes: 4,
+        content: "<p>Premier paragraphe du corps.</p>",
       })
     );
 

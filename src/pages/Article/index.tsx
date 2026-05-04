@@ -1,8 +1,12 @@
-import { use } from "react";
+import { use, useMemo, useState } from "react";
 import { useParams, useNavigate } from "react-router";
+import DOMPurify from "dompurify";
+import axios from "axios";
 import img from "../../assets/img.webp";
-import { getPostPromise } from "../../data/articles";
-import { getCategoryColor } from "../../utils/categoryColors";
+import Button from "../../components/ui/Button";
+import ConfirmDialog from "../../components/ui/ConfirmDialog";
+import { deletePost, getPostPromise } from "../../data/articles";
+import { getCategoryColor } from "../../data/categories";
 
 // Page de détail d'un article
 const Article = () => {
@@ -10,8 +14,42 @@ const Article = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
 
-  // Suspends on first navigation to a slug, then resolves from cache.
+  // Suspend à la première navigation vers un slug, puis résout depuis le cache.
   const article = use(getPostPromise(slug ?? ""));
+
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  // Le HTML vient du RichTextEditor (TipTap) — assaini avant rendu pour neutraliser
+  // tout XSS qu'un auteur authentifié aurait pu glisser dans la requête API.
+  const safeContent = useMemo(
+    () => (article?.content ? DOMPurify.sanitize(article.content) : ""),
+    [article?.content]
+  );
+
+  const handleDelete = async () => {
+    if (!article || isDeleting) return;
+
+    setIsDeleting(true);
+    setDeleteError(null);
+    try {
+      await deletePost(article.slug);
+      navigate("/articles");
+    } catch (error) {
+      const message =
+        axios.isAxiosError(error) && error.response?.status === 403
+          ? "Vous n'êtes pas autorisé à supprimer cet article."
+          : "La suppression a échoué. Veuillez réessayer.";
+      setDeleteError(message);
+      setIsDeleting(false);
+    }
+  };
+
+  const closeConfirm = () => {
+    setConfirmOpen(false);
+    setDeleteError(null);
+  };
 
   // Page 404 si article non trouvé
   if (!article) {
@@ -21,7 +59,7 @@ const Article = () => {
           <h1 className="text-4xl font-bold mb-6">Article non trouvé</h1>
           <button
             onClick={() => navigate("/articles")}
-            className="text-secondary hover:underline"
+            className="cursor-pointer text-secondary hover:underline transition-colors"
           >
             Retour aux articles
           </button>
@@ -37,7 +75,7 @@ const Article = () => {
         <nav className="mb-8 text-sm text-gray-400">
           <button
             onClick={() => navigate("/articles")}
-            className="hover:text-secondary transition-colors"
+            className="cursor-pointer hover:text-secondary hover:underline transition-colors"
           >
             Articles
           </button>
@@ -49,7 +87,7 @@ const Article = () => {
         <div className="mb-4">
           <span
             className={`inline-flex items-center px-3 py-1 rounded text-sm font-semibold text-white ${getCategoryColor(
-              article.category
+              article.categoryKey
             )}`}
           >
             <span className={`w-2 h-2 rounded-full bg-white mr-2`}></span>
@@ -69,7 +107,12 @@ const Article = () => {
 
         {/* Métadonnées : auteur, date, temps de lecture */}
         <div className="flex items-center gap-4 text-sm text-gray-400 mb-8 pb-8 border-b border-gray-700">
-          <span>Par {article.author || "Rédaction"}</span>
+          <span>
+            Par{" "}
+            {article.isOwner
+              ? `Moi${article.author ? ` (${article.author})` : ""}`
+              : article.author || "Rédaction"}
+          </span>
           <span>•</span>
           <time>{article.date}</time>
           {article.readTime && (
@@ -88,39 +131,31 @@ const Article = () => {
             className="w-full h-auto rounded-lg object-cover"
             width={1344}
             height={768}
+            loading="eager"
             fetchPriority="high"
             decoding="async"
           />
-          <figcaption className="text-sm text-gray-400 mt-3 text-center italic">
-            Illustration de l'article
-          </figcaption>
         </figure>
 
         {/* Contenu de l'article */}
-        <div className="prose prose-invert prose-lg max-w-none">
-          {article.content ? (
-            article.content.map((paragraph, index) => (
-              <p
-                key={index}
-                className="text-gray-300 leading-relaxed mb-6 text-justify text-lg tracking-wide"
-              >
-                {paragraph}
-              </p>
-            ))
-          ) : (
-            <p className="text-gray-300 leading-relaxed mb-6 text-justify text-lg tracking-wide">
-              {article.summary}
-            </p>
-          )}
-        </div>
+        {safeContent ? (
+          <div
+            className="prose prose-invert prose-lg max-w-none prose-p:text-gray-300 prose-p:leading-relaxed prose-p:text-justify prose-headings:text-white prose-strong:text-white prose-a:text-secondary prose-blockquote:border-secondary prose-blockquote:text-gray-300"
+            dangerouslySetInnerHTML={{ __html: safeContent }}
+          />
+        ) : (
+          <p className="text-gray-300 leading-relaxed mb-6 text-justify text-lg tracking-wide">
+            {article.summary}
+          </p>
+        )}
 
         <div className="my-12 border-t border-gray-700"></div>
 
-        {/* Actions : retour et partage */}
+        {/* Actions : retour, suppression (propriétaire) et partage */}
         <div className="flex justify-between items-center">
           <button
             onClick={() => navigate("/articles")}
-            className="flex items-center gap-2 text-secondary hover:underline transition-colors"
+            className="flex items-center gap-2 cursor-pointer text-secondary hover:underline transition-colors"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -137,27 +172,41 @@ const Article = () => {
             Retour aux articles
           </button>
 
-          {/* Bouton de partage */}
-          <div className="flex gap-4">
-            <button className="text-gray-400 hover:text-white transition-colors">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-                />
-              </svg>
-            </button>
-          </div>
+          {article.isOwner && (
+            <div className="flex gap-4 items-center">
+              <Button
+                type="button"
+                primary
+                compact
+                disabled={isDeleting}
+                onClick={() => navigate(`/articles/${article.slug}/edit`)}
+                text="Modifier"
+              />
+              <Button
+                type="button"
+                destructive
+                compact
+                disabled={isDeleting}
+                onClick={() => setConfirmOpen(true)}
+                text={isDeleting ? "Suppression..." : "Supprimer"}
+              />
+            </div>
+          )}
         </div>
       </div>
+
+      <ConfirmDialog
+        open={confirmOpen}
+        title="Supprimer l'article"
+        message="Cette action est irréversible. L'article sera définitivement retiré du site."
+        confirmLabel={isDeleting ? "Suppression..." : "Supprimer"}
+        cancelLabel="Annuler"
+        destructive
+        pending={isDeleting}
+        errorMessage={deleteError ?? undefined}
+        onConfirm={handleDelete}
+        onCancel={closeConfirm}
+      />
     </article>
   );
 };

@@ -12,9 +12,10 @@ interface PaginatedResponse<T> {
   results: T[];
 }
 
-// Hard cap on pagination requests so a misconfigured `next` URL or runaway
-// backend cannot spin the build forever. 100 pages × default page size
-// covers far more posts than this site is expected to ever publish.
+// Garde-fou sur la pagination : un `next` mal configuré ou un backend
+// emballé ne doit pas pouvoir faire tourner le build à l'infini. 100 pages
+// × taille de page par défaut, c'est largement plus que ce que ce site
+// publiera jamais.
 const MAX_SITEMAP_PAGES = 100;
 
 const fetchPostSlugs = async (): Promise<string[]> => {
@@ -37,9 +38,9 @@ const fetchPostSlugs = async (): Promise<string[]> => {
       );
     }
   } catch (error) {
-    // The API may not be reachable at build time (e.g. CI without backend).
-    // We still emit a sitemap with the static routes; per-article URLs will
-    // be discovered via crawl from the /articles index page.
+    // L'API peut ne pas être joignable au build (ex. CI sans backend lancé).
+    // On émet quand même un sitemap avec les routes statiques ; les URLs
+    // par article seront découvertes par crawl depuis la page /articles.
     console.warn(`Sitemap: skipping per-article URLs (${String(error)}).`);
   }
   return slugs;

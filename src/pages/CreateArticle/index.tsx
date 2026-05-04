@@ -1,5 +1,5 @@
 import { Navigate } from "react-router";
-import CreateArticleForm from "../../components/form/CreateArticleForm";
+import ArticleForm from "../../components/form/ArticleForm";
 import { useAuth } from "../../utils/auth";
 
 // Page de création d'un article (réservée aux utilisateurs authentifiés)
@@ -15,13 +15,13 @@ const CreateArticle = () => {
 
   return (
     <section className="text-white py-10 pt-30 px-10 xl:px-0">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl lg:text-5xl font-extrabold tracking-wide leading-16 lg:leading-20 mb-10 text-center">
+      <div className="max-w-2xl mx-auto">
+        <h1 className="text-3xl md:text-4xl font-extrabold tracking-wide leading-tight mb-8 text-center">
           Nouvel article
         </h1>
 
-        <div className="bg-[#21223F] rounded-2xl p-8 md:p-12">
-          <CreateArticleForm />
+        <div className="bg-[#21223F] rounded-2xl p-6 md:p-8">
+          <ArticleForm />
         </div>
       </div>
     </section>

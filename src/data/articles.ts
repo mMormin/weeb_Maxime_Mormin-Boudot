@@ -1,7 +1,9 @@
 import axios from "axios";
 import { api, API_ENDPOINTS } from "../config/api";
+import { AUTH_EVENT } from "../utils/auth";
+import { getCategoryLabel } from "./categories";
 
-// Shape returned by the Django REST API (`PostSerializer`)
+// Forme retournée par l'API Django REST (`PostSerializer`)
 interface RawPost {
   id: number;
   title: string;
@@ -11,6 +13,7 @@ interface RawPost {
   category: string;
   readTime: number;
   author: string;
+  is_owner: boolean;
   is_published: boolean;
   created_at: string;
   updated_at: string;
@@ -29,11 +32,24 @@ export interface Article {
   slug: string;
   date: string;
   summary: string;
+  // Libellé affiché (capitalisé). Pour pré-remplir le `<select>` du formulaire
+  // d'édition, utiliser `categoryKey` qui conserve la valeur brute attendue
+  // par l'API.
   category: string;
+  categoryKey: string;
   size?: "small" | "medium" | "large";
   author?: string;
+  // True quand l'article appartient à l'utilisateur authentifié courant.
+  // Calculé côté API à partir du JWT — pilote l'affichage "Moi" et les boutons
+  // d'édition / de suppression dans `pages/Article/index.tsx`.
+  isOwner: boolean;
   readTime?: string;
-  content?: string[];
+  // Valeur numérique brute (minutes) utilisée pour pré-remplir le formulaire
+  // d'édition. `readTime` reste la version formatée pour l'affichage.
+  readTimeMinutes?: number;
+  // HTML produit par le RichTextEditor TipTap. Doit être assaini avant rendu
+  // (cf. `dangerouslySetInnerHTML` + DOMPurify dans `pages/Article/index.tsx`).
+  content?: string;
 }
 
 // Payload du formulaire de création d'article (cf. PostSerializer côté Django)
@@ -45,15 +61,18 @@ export interface ArticleDraft {
   readTime: number;
 }
 
-const formatDate = (iso: string): string =>
-  new Intl.DateTimeFormat("fr-FR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(new Date(iso));
+// Singleton : la construction d'un `Intl.DateTimeFormat` est non-triviale,
+// et `mapPost` est appelé pour chaque article d'une liste paginée.
+const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
+const formatDate = (iso: string): string => dateFormatter.format(new Date(iso));
 
 const formatCategory = (raw: string): string =>
-  raw ? raw.charAt(0).toUpperCase() + raw.slice(1) : "";
+  raw ? getCategoryLabel(raw) : "";
 
 // Article-list grid layout: first card large, next two medium, rest small.
 const SIZE_BY_INDEX: Array<NonNullable<Article["size"]>> = [
@@ -69,16 +88,12 @@ const mapPost = (raw: RawPost): Article => ({
   date: formatDate(raw.created_at),
   summary: raw.excerpt,
   category: formatCategory(raw.category),
+  categoryKey: raw.category,
   author: raw.author || undefined,
+  isOwner: Boolean(raw.is_owner),
   readTime: raw.readTime ? `${raw.readTime} min` : undefined,
-  // Backend contract: `content` is plain text with paragraphs separated by
-  // blank lines. Markdown/HTML would render literally — convert upstream first.
-  content: raw.content
-    ? raw.content
-        .split(/\n{2,}/)
-        .map((p) => p.trim())
-        .filter(Boolean)
-    : undefined,
+  readTimeMinutes: raw.readTime || undefined,
+  content: raw.content || undefined,
 });
 
 const fetchPosts = async (): Promise<Article[]> => {
@@ -143,3 +158,46 @@ export const createPost = async (draft: ArticleDraft): Promise<Article> => {
   postCache.delete(data.slug);
   return mapPost(data);
 };
+
+// Met à jour un article existant. Le slug est read-only côté API : la mise
+// à jour ne peut pas le changer, donc l'URL de détail reste valide. On
+// invalide la liste et on remplace l'entrée du cache par la version fraîche
+// pour que la prochaine navigation reflète immédiatement la modification.
+export const updatePost = async (
+  slug: string,
+  draft: ArticleDraft,
+): Promise<Article> => {
+  const { data } = await api.patch<RawPost>(
+    `${API_ENDPOINTS.posts}${slug}/`,
+    draft,
+  );
+  const article = mapPost(data);
+  postsPromiseCache = null;
+  postCache.set(slug, Promise.resolve(article));
+  return article;
+};
+
+// Supprime un article et invalide les caches pour que /articles et le détail
+// reflètent immédiatement la suppression (sinon `use(getPostPromise)` ressert
+// l'article supprimé jusqu'au prochain reload).
+export const deletePost = async (slug: string): Promise<void> => {
+  await api.delete(`${API_ENDPOINTS.posts}${slug}/`);
+  postsPromiseCache = null;
+  postCache.delete(slug);
+};
+
+// Vide les caches de posts. Appelé sur changement d'auth (login/logout) car
+// `is_owner` est calculé côté API à partir du JWT — un cache hérité d'une
+// session précédente afficherait des "Modifier"/"Supprimer" pour les mauvais
+// articles, voire ceux d'un autre utilisateur.
+export const invalidatePostCaches = (): void => {
+  postsPromiseCache = null;
+  postCache.clear();
+};
+
+// Auto-invalidation : `auth.ts` émet `AUTH_EVENT` à chaque setTokens /
+// clearTokens. En se branchant ici (côté data) plutôt que dans `auth.ts` on
+// évite un cycle d'imports `auth → articles → config/api → auth`.
+if (typeof window !== "undefined") {
+  window.addEventListener(AUTH_EVENT, invalidatePostCaches);
+}

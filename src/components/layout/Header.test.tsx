@@ -43,24 +43,28 @@ describe("Header (desktop)", () => {
     renderHeader();
 
     expect(screen.getByText("Se connecter")).toBeInTheDocument();
-    expect(screen.queryByText("Déconnexion")).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Se déconnecter" })
+    ).not.toBeInTheDocument();
   });
 
-  it("affiche 'Déconnexion' quand un access token est présent", () => {
+  it("affiche le bouton de déconnexion quand un access token est présent", () => {
     setTokens("tok", "ref");
 
     renderHeader();
 
-    expect(screen.getByText("Déconnexion")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Se déconnecter" })
+    ).toBeInTheDocument();
     expect(screen.queryByText("Se connecter")).not.toBeInTheDocument();
   });
 
-  it("efface les tokens et bascule l'UI quand on clique sur Déconnexion", async () => {
+  it("efface les tokens et bascule l'UI quand on clique sur le bouton de déconnexion", async () => {
     const user = userEvent.setup();
     setTokens("tok", "ref");
     renderHeader();
 
-    await user.click(screen.getByRole("button", { name: "Déconnexion" }));
+    await user.click(screen.getByRole("button", { name: "Se déconnecter" }));
 
     expect(localStorage.getItem("weeb_access_token")).toBeNull();
     expect(localStorage.getItem("weeb_refresh_token")).toBeNull();
@@ -76,7 +80,7 @@ describe("Header (mobile)", () => {
     clearTokens();
   });
 
-  it("affiche 'Déconnexion' dans le menu mobile quand authentifié", async () => {
+  it("affiche 'Se déconnecter' dans le menu mobile quand authentifié", async () => {
     const user = userEvent.setup();
     setTokens("tok", "ref");
     renderHeader();
@@ -85,7 +89,7 @@ describe("Header (mobile)", () => {
     await user.click(screen.getByRole("button", { name: /ouvrir le menu/i }));
 
     expect(
-      screen.getByRole("button", { name: "Déconnexion" })
+      screen.getByRole("button", { name: "Se déconnecter" })
     ).toBeInTheDocument();
     expect(screen.queryByText("Se connecter")).not.toBeInTheDocument();
   });
@@ -97,7 +101,7 @@ describe("Header (mobile)", () => {
     await user.click(screen.getByRole("button", { name: /ouvrir le menu/i }));
 
     expect(screen.getByText("Se connecter")).toBeInTheDocument();
-    expect(screen.queryByText("Déconnexion")).not.toBeInTheDocument();
+    expect(screen.queryByText("Se déconnecter")).not.toBeInTheDocument();
   });
 });
 

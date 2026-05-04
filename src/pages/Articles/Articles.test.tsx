@@ -5,9 +5,9 @@ import { Suspense } from "react";
 import { MemoryRouter, Route, Routes } from "react-router";
 import Articles from "./index";
 
-// Mock the data module so the page reads a deterministic article list
-// instead of triggering a real network call. The promise is memoized so
-// `use()` sees a stable reference across re-renders (React 19 contract).
+// Mock du module data pour que la page lise une liste déterministe au lieu
+// de déclencher un vrai appel réseau. La promesse est mémoïsée pour que
+// `use()` voie une référence stable d'un render à l'autre (contrat React 19).
 vi.mock("../../data/articles", () => {
   const promise = Promise.resolve([
     {
@@ -17,7 +17,9 @@ vi.mock("../../data/articles", () => {
       date: "1 mai 2026",
       summary: "Tour d'horizon des nouveautés",
       category: "Développement",
+      categoryKey: "developpement",
       size: "large",
+      isOwner: false,
     },
     {
       id: 2,
@@ -25,16 +27,18 @@ vi.mock("../../data/articles", () => {
       title: "CSS moderne en 2026",
       date: "2 mai 2026",
       summary: "Container queries et au-delà",
-      category: "CSS",
+      category: "Design",
+      categoryKey: "design",
       size: "small",
+      isOwner: false,
     },
   ]);
   return { getPostsPromise: () => promise };
 });
 
-// React 19's `use()` suspends on the first render and resumes after the
-// promise resolves in a microtask. Wrapping in `await act(...)` lets React
-// commit the resolved render before assertions run.
+// `use()` de React 19 suspend au premier render et reprend une fois la
+// promesse résolue dans une microtask. Le `await act(...)` laisse React
+// committer le render résolu avant que les assertions ne tournent.
 const renderArticles = async () => {
   await act(async () => {
     render(
