@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# On utilise pnpm exclusivement — pas de lockfile npm/yarn dans le repo
+package-lock.json
+yarn.lock
+
 # Environment variables
 .env
 .env.*
