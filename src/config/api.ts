@@ -1,14 +1,8 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
-import {
-  clearTokens,
-  getAccessToken,
-  getRefreshToken,
-  setTokens,
-} from "../utils/auth";
+import { clearTokens, getAccessToken, getRefreshToken, setTokens } from "../utils/auth";
 
 // URL de base de l'API selon l'environnement
-export const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:8000";
+export const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 // Endpoints de l'API Django
 export const API_ENDPOINTS = {
@@ -21,8 +15,6 @@ export const API_ENDPOINTS = {
 } as const;
 
 // Instance Axios configurée pour l'API Django (auth JWT, pas de session/CSRF)
-// Timeout généreux : l'API tourne sur Render free-tier, qui s'endort après
-// 15min d'inactivité et met 30-60s à se réveiller au premier appel.
 export const api = axios.create({
   baseURL: API_BASE_URL,
   timeout: 60000,
@@ -65,10 +57,9 @@ api.interceptors.response.use(
 
     try {
       refreshPromise ??= axios
-        .post<{ access: string; refresh?: string }>(
-          `${API_BASE_URL}${API_ENDPOINTS.refresh}`,
-          { refresh },
-        )
+        .post<{ access: string; refresh?: string }>(`${API_BASE_URL}${API_ENDPOINTS.refresh}`, {
+          refresh,
+        })
         .then((res) => {
           setTokens(res.data.access, res.data.refresh ?? refresh);
           return res.data.access;
