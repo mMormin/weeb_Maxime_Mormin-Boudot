@@ -97,7 +97,7 @@ const ArticleForm = ({ article }: ArticleFormProps) => {
         // d'auteur. On vérifie via /me ; si vide, on stocke le brouillon et
         // on ouvre la modal bloquante (la publication reprendra ensuite).
         const me = await getMe();
-        if (!me.username.trim()) {
+        if (!me.username?.trim()) {
           setPendingDraft(draft);
           return;
         }
