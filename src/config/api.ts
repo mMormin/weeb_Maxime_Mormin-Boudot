@@ -21,9 +21,11 @@ export const API_ENDPOINTS = {
 } as const;
 
 // Instance Axios configurée pour l'API Django (auth JWT, pas de session/CSRF)
+// Timeout généreux : l'API tourne sur Render free-tier, qui s'endort après
+// 15min d'inactivité et met 30-60s à se réveiller au premier appel.
 export const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10000,
+  timeout: 60000,
   headers: {
     "Content-Type": "application/json",
   },
